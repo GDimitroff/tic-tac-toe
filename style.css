@@ -32,38 +32,22 @@ body {
   align-items: center;
 }
 
-.start-screen {
-  text-align: center;
-}
-
 .header {
   font-size: 3.8rem;
-  margin-bottom: 3rem;
+  margin-bottom: 6rem;
   color: var(--primary-dark);
   text-shadow: 4px 4px var(--primary-teal);
 }
 
-.game-mode-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 18px;
+.start-game {
+  position: relative;
 }
 
-.game-screen {
-  display: flex;
-  flex-direction: column;
-}
-
-.board {
-  display: none;
-  grid-template-columns: repeat(3, 120px);
-  grid-template-rows: repeat(3, 120px);
-  gap: 5px;
-  background-color: var(--primary-teal);
-}
-
-.field {
-  background-color: var(--primary-light);
+.start-game > * {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .btn {
@@ -84,13 +68,21 @@ body {
   transition: all 0.4s ease-in-out;
 }
 
-.btn:hover {
-  box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+.btn-start {
+  opacity: 1;
 }
 
-.btn-start {
-  margin-top: 2rem;
+.game-mode-buttons {
+  width: 100%;
   display: none;
+  justify-content: center;
+  gap: 18px;
+  opacity: 0;
+  transition: all 0.4s ease-in-out 0.4s;
+}
+
+.btn:hover {
+  box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
 }
 
 .btn-pve {
@@ -99,4 +91,21 @@ body {
 
 .btn-pvp {
   background: var(--primary-dark);
+}
+
+.game-screen {
+  display: flex;
+  flex-direction: column;
+}
+
+.board {
+  display: none;
+  grid-template-columns: repeat(3, 120px);
+  grid-template-rows: repeat(3, 120px);
+  gap: 5px;
+  background-color: var(--primary-teal);
+}
+
+.field {
+  background-color: var(--primary-light);
 }

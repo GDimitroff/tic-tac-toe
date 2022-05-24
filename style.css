@@ -1,0 +1,79 @@
+:root {
+  --primary-dark: #334155;
+  --primary-light: #e2e8f0;
+  --primary-teal: #2dd4bf;
+}
+
+*,
+*::after,
+*::before {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+  height: -webkit-fill-available;
+}
+
+body {
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+
+  font-family: 'Black Ops One', cursive;
+  font-size: 1.6rem;
+  color: var(--primary-dark);
+  background-color: var(--primary-light);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.start-screen {
+  text-align: center;
+}
+
+.header {
+  font-size: 3.8rem;
+  margin-bottom: 3rem;
+  color: var(--primary-dark);
+  text-shadow: 4px 4px var(--primary-teal);
+}
+
+.btn-start {
+  margin-top: 2rem;
+}
+
+.game-screen {
+  display: flex;
+  flex-direction: column;
+}
+
+.board {
+  display: none;
+  grid-template-columns: repeat(3, 120px);
+  grid-template-rows: repeat(3, 120px);
+  gap: 3px;
+  background-color: var(--primary-dark);
+}
+
+.field {
+  background-color: var(--primary-light);
+}
+
+.btn {
+  font-family: inherit;
+  font-size: 1.6rem;
+  padding: 1.2rem 3.6rem;
+  color: var(--primary-light);
+  background: linear-gradient(
+    to left,
+    var(--primary-dark),
+    var(--primary-teal)
+  );
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}

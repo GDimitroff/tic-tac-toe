@@ -78,7 +78,7 @@ body {
   justify-content: center;
   gap: 18px;
   opacity: 0;
-  transition: all 0.4s ease-in-out 0.4s;
+  transition: all 0.4s ease-in-out 0.2s;
 }
 
 .btn:hover {
@@ -91,6 +91,12 @@ body {
 
 .btn-pvp {
   background: var(--primary-dark);
+}
+
+.players {
+  display: none;
+  opacity: 0;
+  transition: all 0.4s ease-in-out 0.2s;
 }
 
 .game-screen {

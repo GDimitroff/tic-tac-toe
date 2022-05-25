@@ -30,25 +30,32 @@
         </div>
         <div class="players">
           <form>
-            <label for="player1">Player 1</label>
-            <input
-              type="text"
-              id="player1"
-              name="player1"
-              placeholder="Enter Name"
-              autocomplete="off"
-              required
-            /><br />
-            <label for="player2">Player 2</label>
-            <input
-              type="text"
-              name="player2"
-              id="player2"
-              placeholder="Enter Name"
-              autocomplete="off"
-              required
-            /><br />
-            <input type="submit" value="Submit" />
+            <div class="inputs">
+              <div class="player">
+                <label for="player1">Player 1</label>
+                <input
+                  type="text"
+                  id="player1"
+                  name="player1"
+                  placeholder="Enter name"
+                  autocomplete="off"
+                  required
+                />
+              </div>
+
+              <div class="player">
+                <label for="player2">Player 2</label>
+                <input
+                  type="text"
+                  name="player2"
+                  id="player2"
+                  placeholder="Enter name"
+                  autocomplete="off"
+                  required
+                />
+              </div>
+            </div>
+            <button class="btn btn-submit" type="submit">Go!</button>
           </form>
         </div>
       </div>

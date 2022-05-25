@@ -26,15 +26,18 @@ body {
   font-size: 1.6rem;
   color: var(--primary-dark);
   background-color: var(--primary-light);
+}
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.start-screen {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -20%);
 }
 
 .header {
   font-size: 3.8rem;
-  margin-bottom: 6rem;
+  margin-bottom: 8rem;
   color: var(--primary-dark);
   text-shadow: 4px 4px var(--primary-teal);
 }
@@ -94,9 +97,50 @@ body {
 }
 
 .players {
+  text-align: center;
+  margin-top: 3.8rem;
   display: none;
+  justify-content: center;
   opacity: 0;
   transition: all 0.4s ease-in-out 0.2s;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.inputs {
+  display: flex;
+  gap: 18px;
+}
+
+.player {
+  width: 150px;
+  display: flex;
+  flex-direction: column;
+}
+
+.player > label {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.player > input {
+  text-align: center;
+  font-family: inherit;
+  font-size: 1.4rem;
+  color: var(--primary-dark);
+  padding: 10px;
+  border: 2px solid var(--primary-teal);
+  border-radius: 4px;
+  outline: none;
+  background: transparent;
+}
+
+.btn-submit {
+  margin-top: 1rem;
 }
 
 .game-screen {

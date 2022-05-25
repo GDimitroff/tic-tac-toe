@@ -28,29 +28,21 @@ body {
   background-color: var(--primary-light);
 }
 
-.start-screen {
-  position: absolute;
-  top: 20%;
-  left: 50%;
-  transform: translate(-50%, -20%);
-}
-
 .header {
   font-size: 3.8rem;
-  margin-bottom: 8rem;
   color: var(--primary-dark);
+  text-align: center;
   text-shadow: 4px 4px var(--primary-teal);
+  padding: 18rem 0 6rem 0;
 }
 
-.start-game {
-  position: relative;
+.game {
+  display: flex;
+  justify-content: center;
 }
 
-.start-game > * {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+.start-screen {
+  transition: all 0.4s ease-in-out;
 }
 
 .btn {
@@ -72,6 +64,7 @@ body {
 }
 
 .btn-start {
+  display: flex;
   opacity: 1;
 }
 
@@ -81,7 +74,7 @@ body {
   justify-content: center;
   gap: 18px;
   opacity: 0;
-  transition: all 0.4s ease-in-out 0.2s;
+  transition: all 0.4s ease-in-out;
 }
 
 .btn:hover {
@@ -98,11 +91,10 @@ body {
 
 .players {
   text-align: center;
-  margin-top: 3.8rem;
   display: none;
   justify-content: center;
   opacity: 0;
-  transition: all 0.4s ease-in-out 0.2s;
+  transition: all 0.4s ease-in-out;
 }
 
 form {
@@ -144,12 +136,14 @@ form {
 }
 
 .game-screen {
-  display: flex;
+  display: none;
   flex-direction: column;
+  opacity: 0;
+  transition: all 0.4s ease-in-out;
 }
 
 .board {
-  display: none;
+  display: grid;
   grid-template-columns: repeat(3, 120px);
   grid-template-rows: repeat(3, 120px);
   gap: 5px;

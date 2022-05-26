@@ -69,7 +69,6 @@ body {
 }
 
 .game-mode-buttons {
-  width: 100%;
   display: none;
   justify-content: center;
   gap: 18px;
@@ -144,12 +143,20 @@ form {
 
 .board {
   display: grid;
-  grid-template-columns: repeat(3, 120px);
-  grid-template-rows: repeat(3, 120px);
+  grid-template-columns: repeat(3, 100px);
+  grid-template-rows: repeat(3, 100px);
   gap: 5px;
-  background-color: var(--primary-teal);
+  background-color: var(--primary-light);
 }
 
 .field {
-  background-color: var(--primary-light);
+  color: var(--primary-light);
+  background-color: var(--primary-teal);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.field:hover {
+  background-color: var(--secondary-teal);
 }

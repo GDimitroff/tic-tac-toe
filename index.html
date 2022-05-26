@@ -28,36 +28,42 @@
     <main class="game">
       <div class="start-screen">
         <button class="btn btn-start"><i class="fa-solid fa-play"></i></button>
+
         <div class="game-mode-buttons">
-          <button class="btn btn-pve">
-            <i class="fa-solid fa-robot"></i>
-          </button>
-          <button class="btn btn-pvp">
-            <i class="fa-solid fa-user-group"></i>
-          </button>
+          <div class="game-mode-button">
+            <p>Player vs AI</p>
+            <button class="btn btn-pve">
+              <i class="fa-solid fa-robot"></i>
+            </button>
+          </div>
+          <div class="game-mode-button">
+            <p>Player vs Player</p>
+            <button class="btn btn-pvp">
+              <i class="fa-solid fa-user-group"></i>
+            </button>
+          </div>
         </div>
+
         <div class="players">
           <form>
             <div class="inputs">
               <div class="player">
-                <label for="player1">Player 1</label>
                 <input
                   type="text"
                   id="player1"
                   name="player1"
-                  placeholder="Enter name"
+                  placeholder="Player 1"
                   autocomplete="off"
                   required
                 />
               </div>
 
               <div class="player">
-                <label for="player2">Player 2</label>
                 <input
                   type="text"
                   name="player2"
                   id="player2"
-                  placeholder="Enter name"
+                  placeholder="Player 2"
                   autocomplete="off"
                   required
                 />
@@ -82,10 +88,10 @@
         </div>
 
         <div class="options">
-          <button class="btn btn-options">
-            <i class="fa-solid fa-angles-left"></i>
+          <button class="btn btn-back">
+            <i class="fa-solid fa-backward"></i>
           </button>
-          <button class="btn btn-options">
+          <button class="btn btn-replay">
             <i class="fa-solid fa-arrow-rotate-left"></i>
           </button>
         </div>

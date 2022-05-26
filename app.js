@@ -7,12 +7,19 @@ const pvpBtn = document.querySelector('.btn-pvp');
 const gameMode = document.querySelector('.game-mode-buttons');
 const players = document.querySelector('.players');
 const submitBtn = document.querySelector('.btn-submit');
+const backBtn = document.querySelector('.btn-back');
 
 startBtn.addEventListener('click', (e) =>
   handleTransition(e, startBtn, gameMode)
 );
+
 pvpBtn.addEventListener('click', (e) => handleTransition(e, gameMode, players));
+
 submitBtn.addEventListener('click', handleStartGame);
+
+backBtn.addEventListener('click', (e) =>
+  handleTransition(e, gameScreen, startScreen)
+);
 
 function handleStartGame(e) {
   e.preventDefault();
@@ -21,13 +28,18 @@ function handleStartGame(e) {
 }
 
 function handleTransition(e, fadeOutElement, fadeInElement) {
-  fadeOutElement.style.opacity = '0';
+  if (fadeOutElement.classList.contains('game-mode-buttons')) {
+    fadeInElement.style.transform = 'scale(1)';
+    return;
+  }
+
+  fadeOutElement.style.transform = 'scale(0)';
   fadeOutElement.addEventListener('transitionend', handleTransitionEnd);
 
   function handleTransitionEnd(e) {
     fadeOutElement.removeEventListener('transitionend', handleTransitionEnd);
     fadeInElement.style.display = 'flex';
     fadeOutElement.style.display = 'none';
-    fadeInElement.style.opacity = '1';
+    fadeInElement.style.transform = 'scale(1)';
   }
 }

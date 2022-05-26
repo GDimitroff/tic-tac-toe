@@ -1,6 +1,8 @@
 :root {
   --primary-dark: #334155;
+  --secondary-dark: #94a3b8;
   --primary-light: #e2e8f0;
+  --secondary-light: #cbd5e1;
   --primary-teal: #14b8a6;
   --secondary-teal: #0f766e;
 }
@@ -42,13 +44,16 @@ body {
 }
 
 .start-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   transition: all 0.4s ease-in-out;
 }
 
 .btn {
   font-size: 1.8rem;
   font-family: inherit;
-  width: 10.6rem;
+  width: 12.6rem;
   height: 4.6rem;
   display: flex;
   justify-content: center;
@@ -74,35 +79,58 @@ i {
 
 .btn-start {
   display: flex;
-  opacity: 1;
+  transform: scale(1);
 }
 
 .game-mode-buttons {
+  width: 100%;
   display: none;
-  justify-content: center;
-  gap: 18px;
-  opacity: 0;
+  justify-content: space-between;
+  transform: scale(0);
   transition: all 0.4s ease-in-out;
+}
+
+.game-mode-button {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.game-mode-button > p {
+  margin-bottom: 1rem;
+  font-size: 1.4rem;
 }
 
 .btn:hover {
   box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
 }
 
+.btn-pve,
+.btn-pvp {
+  width: 16.2rem;
+}
+
 .btn-pve {
   background: var(--primary-teal);
 }
 
+.btn-back,
+.btn-replay,
 .btn-pvp {
   background: var(--primary-dark);
 }
 
 .players {
-  text-align: center;
-  display: none;
+  display: flex;
   justify-content: center;
-  opacity: 0;
+  margin-top: 5.2rem;
+  border-radius: 4px;
+  padding: 2rem;
+  transform: scale(0);
   transition: all 0.4s ease-in-out;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 }
 
 form {
@@ -131,7 +159,6 @@ form {
   text-align: center;
   font-family: inherit;
   font-size: 1.4rem;
-  color: var(--primary-dark);
   padding: 10px;
   border: 2px solid var(--primary-teal);
   border-radius: 4px;
@@ -139,14 +166,26 @@ form {
   background: transparent;
 }
 
+.player > input::placeholder {
+  font-size: 1.2rem;
+  color: var(--secondary-dark);
+}
+
 .btn-submit {
-  margin-top: 1rem;
+  width: 100%;
+  box-shadow: none;
+}
+
+.btn-submit:hover {
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 }
 
 .game-screen {
   display: none;
   flex-direction: column;
-  opacity: 0;
+  gap: 28px;
+  transform: scale(0);
   transition: all 0.4s ease-in-out;
 }
 
@@ -168,4 +207,9 @@ form {
 
 .field:hover {
   background-color: var(--secondary-teal);
+}
+
+.options {
+  display: flex;
+  justify-content: space-between;
 }

@@ -1,45 +1,90 @@
-const game = document.querySelector('.game');
-const startScreen = document.querySelector('.start-screen');
-const gameScreen = document.querySelector('.game-screen');
-const startBtn = document.querySelector('.btn-start');
-const pveBtn = document.querySelector('.btn-pve');
-const pvpBtn = document.querySelector('.btn-pvp');
-const gameMode = document.querySelector('.game-mode-buttons');
-const players = document.querySelector('.players');
-const submitBtn = document.querySelector('.btn-submit');
-const backBtn = document.querySelector('.btn-back');
+const Player = (name, sign) => {
+  const getName = () => name;
+  const getSign = () => sign;
 
-startBtn.addEventListener('click', (e) =>
-  handleTransition(e, startBtn, gameMode)
-);
+  return { getName, getSign };
+};
 
-pvpBtn.addEventListener('click', (e) => handleTransition(e, gameMode, players));
+const gameController = (() => {
+  let player1 = null;
+  let player2 = null;
 
-submitBtn.addEventListener('click', handleStartGame);
+  const getPlayer1 = () => player1;
+  const getPlayer2 = () => player2;
 
-backBtn.addEventListener('click', (e) =>
-  handleTransition(e, gameScreen, startScreen)
-);
+  const setPlayers = (firstPlayer, secondPlayer) => {
+    player1 = firstPlayer;
+    player2 = secondPlayer;
+  };
 
-function handleStartGame(e) {
-  e.preventDefault();
+  return { getPlayer1, getPlayer2, setPlayers };
+})();
 
-  handleTransition(e, startScreen, gameScreen);
-}
+const displayController = (() => {
+  const game = document.querySelector('.game');
+  const startScreen = game.querySelector('.start-screen');
+  const gameScreen = game.querySelector('.game-screen');
+  const startBtn = game.querySelector('.btn-start');
+  const pvpBtn = game.querySelector('.btn-pvp');
+  const gameMode = game.querySelector('.game-mode-buttons');
+  const players = game.querySelector('.players');
+  const form = game.querySelector('.players > form');
+  const backBtn = game.querySelector('.btn-back');
+  const fields = game.querySelectorAll('.field');
+  const message = game.querySelector('.message');
+  const restartBtn = game.querySelector('.btn-restart');
 
-function handleTransition(e, fadeOutElement, fadeInElement) {
-  if (fadeOutElement.classList.contains('game-mode-buttons')) {
-    fadeInElement.style.transform = 'scale(1)';
-    return;
+  const setMessage = (newMessage) => {
+    message.textContent = newMessage;
+  };
+
+  startBtn.addEventListener('click', (e) =>
+    handleTransition(e, startBtn, gameMode)
+  );
+  pvpBtn.addEventListener('click', (e) =>
+    handleTransition(e, gameMode, players)
+  );
+  form.addEventListener('submit', handleStartGame);
+  backBtn.addEventListener('click', (e) =>
+    handleTransition(e, gameScreen, startScreen)
+  );
+
+  function handleStartGame(e) {
+    e.preventDefault();
+
+    handleTransition(e, startScreen, gameScreen);
+
+    const formData = new FormData(e.target);
+    const { player1: firstPlayerName, player2: secondPlayerName } =
+      Object.fromEntries(formData);
+
+    const firstPlayer = Player(firstPlayerName, 'X');
+    const secondPlayer = Player(secondPlayerName, 'O');
+    gameController.setPlayers(firstPlayer, secondPlayer);
+    setMessage(
+      `Turn: ${gameController.getPlayer1().getName()} (${gameController
+        .getPlayer1()
+        .getSign()})`
+    );
+    e.target.reset();
   }
 
-  fadeOutElement.style.transform = 'scale(0)';
-  fadeOutElement.addEventListener('transitionend', handleTransitionEnd);
+  function handleTransition(e, fadeOutElement, fadeInElement) {
+    if (fadeOutElement.classList.contains('game-mode-buttons')) {
+      fadeInElement.style.transform = 'scale(1)';
+      return;
+    }
 
-  function handleTransitionEnd(e) {
-    fadeOutElement.removeEventListener('transitionend', handleTransitionEnd);
-    fadeInElement.style.display = 'flex';
-    fadeOutElement.style.display = 'none';
-    fadeInElement.style.transform = 'scale(1)';
+    fadeOutElement.style.transform = 'scale(0)';
+    fadeOutElement.addEventListener('transitionend', handleTransitionEnd);
+
+    function handleTransitionEnd(e) {
+      fadeOutElement.removeEventListener('transitionend', handleTransitionEnd);
+      fadeInElement.style.display = 'flex';
+      fadeOutElement.style.display = 'none';
+      fadeInElement.style.transform = 'scale(1)';
+    }
   }
-}
+
+  return { setMessage };
+})();

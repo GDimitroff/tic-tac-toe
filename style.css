@@ -35,7 +35,7 @@ body {
   color: var(--primary-dark);
   text-align: center;
   text-shadow: 4px 4px var(--primary-teal);
-  padding: 18rem 0 6rem 0;
+  padding: 12rem 0 3rem 0;
 }
 
 .game {
@@ -116,7 +116,7 @@ i {
 }
 
 .btn-back,
-.btn-replay,
+.btn-restart,
 .btn-pvp {
   background: var(--primary-dark);
 }
@@ -184,9 +184,12 @@ form {
 .game-screen {
   display: none;
   flex-direction: column;
-  gap: 28px;
   transform: scale(0);
   transition: all 0.4s ease-in-out;
+}
+
+.message {
+  align-self: center;
 }
 
 .board {
@@ -195,13 +198,13 @@ form {
   grid-template-rows: repeat(3, 100px);
   gap: 5px;
   background-color: var(--primary-light);
+  margin: 3rem 0;
 }
 
 .field {
   color: var(--primary-light);
   background-color: var(--primary-teal);
   border-radius: 4px;
-  cursor: pointer;
   transition: all 0.2s ease-in-out;
 }
 

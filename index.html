@@ -13,6 +13,10 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./style.css" />
+    <script
+      src="https://kit.fontawesome.com/54ad0d43c6.js"
+      crossorigin="anonymous"
+    ></script>
     <script defer src="./app.js"></script>
     <title>Tic Tac Toe</title>
   </head>
@@ -23,10 +27,14 @@
 
     <main class="game">
       <div class="start-screen">
-        <button class="btn btn-start">Start Game</button>
+        <button class="btn btn-start"><i class="fa-solid fa-play"></i></button>
         <div class="game-mode-buttons">
-          <button class="btn btn-pve">Player vs. AI</button>
-          <button class="btn btn-pvp">Player vs. Player</button>
+          <button class="btn btn-pve">
+            <i class="fa-solid fa-robot"></i>
+          </button>
+          <button class="btn btn-pvp">
+            <i class="fa-solid fa-user-group"></i>
+          </button>
         </div>
         <div class="players">
           <form>
@@ -71,6 +79,15 @@
           <div class="field" data-index="6"></div>
           <div class="field" data-index="7"></div>
           <div class="field" data-index="8"></div>
+        </div>
+
+        <div class="options">
+          <button class="btn btn-options">
+            <i class="fa-solid fa-angles-left"></i>
+          </button>
+          <button class="btn btn-options">
+            <i class="fa-solid fa-arrow-rotate-left"></i>
+          </button>
         </div>
       </div>
     </main>

@@ -46,9 +46,13 @@ body {
 }
 
 .btn {
+  font-size: 1.8rem;
   font-family: inherit;
-  font-size: 1.6rem;
-  padding: 1.2rem 2.6rem;
+  width: 10.6rem;
+  height: 4.6rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   color: var(--primary-light);
   background: linear-gradient(
     to left,
@@ -61,6 +65,11 @@ body {
   box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
     rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
   transition: all 0.4s ease-in-out;
+}
+
+i {
+  font-size: 2.2rem;
+  color: var(--primary-light);
 }
 
 .btn-start {

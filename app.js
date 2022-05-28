@@ -188,9 +188,13 @@ const displayController = (() => {
     handleTransition(e, gameMode, players)
   );
   form.addEventListener('submit', handleStartGame);
-  backBtn.addEventListener('click', (e) =>
-    handleTransition(e, gameScreen, startScreen)
-  );
+  backBtn.addEventListener('click', (e) => {
+    board.reset();
+    gameController.reset();
+    resetBoard();
+
+    handleTransition(e, gameScreen, startScreen);
+  });
 
   function handleStartGame(e) {
     e.preventDefault();

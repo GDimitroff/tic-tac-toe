@@ -5,9 +5,34 @@ const Player = (name, sign) => {
   return { getName, getSign };
 };
 
+const board = (() => {
+  const board = ['', '', '', '', '', '', '', '', ''];
+
+  const getField = (index) => {
+    if (index > board.length) return;
+
+    return board[index];
+  };
+
+  const setField = (index, sign) => {
+    if (index > board.length) return;
+
+    board[index] = sign;
+  };
+
+  const reset = () => {
+    for (let i = 0; i < board.length; i++) {
+      board[i] = '';
+    }
+  };
+
+  return { getField, setField, reset };
+})();
+
 const gameController = (() => {
   let player1 = null;
   let player2 = null;
+  let round = 1;
 
   const getPlayer1 = () => player1;
   const getPlayer2 = () => player2;
@@ -17,7 +42,24 @@ const gameController = (() => {
     player2 = secondPlayer;
   };
 
-  return { getPlayer1, getPlayer2, setPlayers };
+  const playRound = (fieldIndex) => {
+    board.setField(fieldIndex, getCurrentPlayerSign());
+
+    round++;
+    displayController.setMessage(
+      `Turn: ${getCurrentPlayerName()} (${getCurrentPlayerSign()})`
+    );
+  };
+
+  const getCurrentPlayerName = () => {
+    return round % 2 === 1 ? player1.getName() : player2.getName();
+  };
+
+  const getCurrentPlayerSign = () => {
+    return round % 2 === 1 ? player1.getSign() : player2.getSign();
+  };
+
+  return { getPlayer1, getPlayer2, setPlayers, playRound };
 })();
 
 const displayController = (() => {
@@ -36,6 +78,21 @@ const displayController = (() => {
 
   const setMessage = (newMessage) => {
     message.textContent = newMessage;
+  };
+
+  fields.forEach((field) => {
+    field.addEventListener('click', (e) => {
+      if (e.target.textContent !== '') return;
+
+      gameController.playRound(parseInt(e.target.dataset.index));
+      updateBoard();
+    });
+  });
+
+  const updateBoard = () => {
+    for (let i = 0; i < fields.length; i++) {
+      fields[i].textContent = board.getField(i);
+    }
   };
 
   startBtn.addEventListener('click', (e) =>

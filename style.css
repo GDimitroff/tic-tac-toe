@@ -218,6 +218,7 @@ form {
 .field-text {
   font-size: 5.2rem;
   opacity: 0;
+  transition: all 0.2s ease-in;
 }
 
 .field-text.active {

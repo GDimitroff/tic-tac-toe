@@ -51,6 +51,10 @@ const gameController = (() => {
     );
   };
 
+  const reset = () => {
+    round = 1;
+  };
+
   const getCurrentPlayerName = () => {
     return round % 2 === 1 ? player1.getName() : player2.getName();
   };
@@ -59,7 +63,7 @@ const gameController = (() => {
     return round % 2 === 1 ? player1.getSign() : player2.getSign();
   };
 
-  return { getPlayer1, getPlayer2, setPlayers, playRound };
+  return { getPlayer1, getPlayer2, setPlayers, playRound, reset };
 })();
 
 const displayController = (() => {
@@ -90,9 +94,37 @@ const displayController = (() => {
     });
   });
 
+  restartBtn.addEventListener('click', (e) => {
+    board.reset();
+    gameController.reset();
+    resetBoard();
+    setMessage(
+      `Turn: ${gameController.getPlayer1().getName()} (${gameController
+        .getPlayer1()
+        .getSign()})`
+    );
+  });
+
   const updateBoard = (fieldIndex) => {
     fields[fieldIndex].children[0].textContent = board.getField(fieldIndex);
     fields[fieldIndex].children[0].classList.add('active');
+  };
+
+  const resetBoard = () => {
+    fields.forEach((field) => {
+      field.children[0].classList.remove('active');
+
+      field.children[0].addEventListener('transitionend', handleTransitionEnd);
+
+      function handleTransitionEnd(e) {
+        field.children[0].removeEventListener(
+          'transitionend',
+          handleTransitionEnd
+        );
+
+        field.children[0].textContent = '';
+      }
+    });
   };
 
   startBtn.addEventListener('click', (e) =>

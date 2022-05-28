@@ -45,6 +45,17 @@ const gameController = (() => {
   const playRound = (fieldIndex) => {
     board.setField(fieldIndex, getCurrentPlayerSign());
 
+    if (checkWinner(fieldIndex)) {
+      const winner = getCurrentPlayerName();
+      displayController.openEndGameModal(winner);
+      return;
+    }
+
+    if (round === 9) {
+      displayController.openEndGameModal('draw');
+      return;
+    }
+
     round++;
     displayController.setMessage(
       `Turn: ${getCurrentPlayerName()} (${getCurrentPlayerSign()})`
@@ -53,6 +64,27 @@ const gameController = (() => {
 
   const reset = () => {
     round = 1;
+  };
+
+  const checkWinner = (fieldIndex) => {
+    const winConditions = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
+
+    return winConditions
+      .filter((combination) => combination.includes(fieldIndex))
+      .some((possibleCombination) =>
+        possibleCombination.every(
+          (index) => board.getField(index) === getCurrentPlayerSign()
+        )
+      );
   };
 
   const getCurrentPlayerName = () => {
@@ -113,7 +145,6 @@ const displayController = (() => {
   const resetBoard = () => {
     fields.forEach((field) => {
       field.children[0].classList.remove('active');
-
       field.children[0].addEventListener('transitionend', handleTransitionEnd);
 
       function handleTransitionEnd(e) {
@@ -125,6 +156,10 @@ const displayController = (() => {
         field.children[0].textContent = '';
       }
     });
+  };
+
+  const openEndGameModal = (result) => {
+    console.log(result);
   };
 
   startBtn.addEventListener('click', (e) =>
@@ -175,5 +210,5 @@ const displayController = (() => {
     }
   }
 
-  return { setMessage };
+  return { setMessage, openEndGameModal };
 })();

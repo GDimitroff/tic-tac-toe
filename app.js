@@ -33,6 +33,8 @@ const gameController = (() => {
   let player1 = null;
   let player2 = null;
   let round = 1;
+  let result = null;
+  let isGameOver = false;
 
   const getPlayer1 = () => player1;
   const getPlayer2 = () => player2;
@@ -42,17 +44,26 @@ const gameController = (() => {
     player2 = secondPlayer;
   };
 
+  const getResult = () => {
+    return result;
+  };
+
+  const getIsGameOver = () => {
+    return isGameOver;
+  };
+
   const playRound = (fieldIndex) => {
     board.setField(fieldIndex, getCurrentPlayerSign());
 
-    if (checkWinner(fieldIndex)) {
-      const winner = getCurrentPlayerName();
-      displayController.openEndGameModal(winner);
-      return;
-    }
+    if (round === 9 || checkWinner(fieldIndex)) {
+      if (checkWinner(fieldIndex)) {
+        result = getCurrentPlayerName();
+      } else {
+        result = 'draw';
+      }
 
-    if (round === 9) {
-      displayController.openEndGameModal('draw');
+      displayController.openEndGameModal(result);
+      isGameOver = true;
       return;
     }
 
@@ -64,6 +75,8 @@ const gameController = (() => {
 
   const reset = () => {
     round = 1;
+    isGameOver = false;
+    result = null;
   };
 
   const checkWinner = (fieldIndex) => {
@@ -95,7 +108,15 @@ const gameController = (() => {
     return round % 2 === 1 ? player1.getSign() : player2.getSign();
   };
 
-  return { getPlayer1, getPlayer2, setPlayers, playRound, reset };
+  return {
+    getPlayer1,
+    getPlayer2,
+    setPlayers,
+    playRound,
+    getResult,
+    getIsGameOver,
+    reset,
+  };
 })();
 
 const displayController = (() => {
@@ -118,7 +139,14 @@ const displayController = (() => {
 
   fields.forEach((field) => {
     field.addEventListener('click', (e) => {
-      if (field.children[0].textContent !== '') return;
+      if (field.children[0].textContent !== '') {
+        return;
+      }
+
+      if (gameController.getIsGameOver()) {
+        displayController.openEndGameModal(gameController.getResult());
+        return;
+      }
 
       const fieldIndex = parseInt(e.target.dataset.index);
       gameController.playRound(fieldIndex);
@@ -145,16 +173,7 @@ const displayController = (() => {
   const resetBoard = () => {
     fields.forEach((field) => {
       field.children[0].classList.remove('active');
-      field.children[0].addEventListener('transitionend', handleTransitionEnd);
-
-      function handleTransitionEnd(e) {
-        field.children[0].removeEventListener(
-          'transitionend',
-          handleTransitionEnd
-        );
-
-        field.children[0].textContent = '';
-      }
+      field.children[0].textContent = '';
     });
   };
 

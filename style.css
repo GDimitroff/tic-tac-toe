@@ -205,11 +205,24 @@ form {
   color: var(--primary-light);
   background-color: var(--primary-teal);
   border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   transition: all 0.2s ease-in-out;
 }
 
 .field:hover {
   background-color: var(--secondary-teal);
+}
+
+.field-text {
+  font-size: 5.2rem;
+  opacity: 0;
+}
+
+.field-text.active {
+  opacity: 1;
+  transition: all 0.4s ease-in;
 }
 
 .options {

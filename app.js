@@ -82,17 +82,17 @@ const displayController = (() => {
 
   fields.forEach((field) => {
     field.addEventListener('click', (e) => {
-      if (e.target.textContent !== '') return;
+      if (field.children[0].textContent !== '') return;
 
-      gameController.playRound(parseInt(e.target.dataset.index));
-      updateBoard();
+      const fieldIndex = parseInt(e.target.dataset.index);
+      gameController.playRound(fieldIndex);
+      updateBoard(fieldIndex);
     });
   });
 
-  const updateBoard = () => {
-    for (let i = 0; i < fields.length; i++) {
-      fields[i].textContent = board.getField(i);
-    }
+  const updateBoard = (fieldIndex) => {
+    fields[fieldIndex].children[0].textContent = board.getField(fieldIndex);
+    fields[fieldIndex].children[0].classList.add('active');
   };
 
   startBtn.addEventListener('click', (e) =>

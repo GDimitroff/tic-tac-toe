@@ -67,12 +67,14 @@ const gameController = (() => {
 
   const playRound = (fieldIndex) => {
     board.setField(fieldIndex, getCurrentPlayer().getSign());
+    const winCombination = checkWinner(fieldIndex);
 
-    if (round === 9 || checkWinner(fieldIndex)) {
-      if (checkWinner(fieldIndex)) {
+    if (round === 9 || winCombination) {
+      if (winCombination) {
         result = getCurrentPlayer().getName();
+        displayController.highlightCombination(winCombination);
       } else {
-        result = 'draw';
+        result = 'Draw';
       }
 
       isGameOver = true;
@@ -91,7 +93,7 @@ const gameController = (() => {
   };
 
   const checkWinner = (fieldIndex) => {
-    const winConditions = [
+    const winCombinations = [
       [0, 1, 2],
       [3, 4, 5],
       [6, 7, 8],
@@ -102,10 +104,10 @@ const gameController = (() => {
       [2, 4, 6],
     ];
 
-    return winConditions
+    return winCombinations
       .filter((combination) => combination.includes(fieldIndex))
-      .some((possibleCombination) =>
-        possibleCombination.every(
+      .find((winCombination) =>
+        winCombination.every(
           (index) => board.getField(index) === getCurrentPlayer().getSign()
         )
       );
@@ -195,6 +197,13 @@ const displayController = (() => {
     fields.forEach((field) => {
       field.children[0].classList.remove('active');
       field.children[0].textContent = '';
+      field.style.background = 'var(--primary-light)';
+    });
+  };
+
+  const highlightCombination = (combination) => {
+    combination.forEach((fieldIndex) => {
+      fields[fieldIndex].style.background = 'var(--secondary-light)';
     });
   };
 
@@ -254,5 +263,9 @@ const displayController = (() => {
     }
   }
 
-  return { setMessage, openEndGameModal };
+  return {
+    setMessage,
+    highlightCombination,
+    openEndGameModal,
+  };
 })();

@@ -70,7 +70,7 @@ const gameController = (() => {
     const winCombinations = checkWinner(fieldIndex);
 
     if (round === 9 || winCombinations.length > 0) {
-      if (winCombinations) {
+      if (winCombinations.length > 0) {
         result = getCurrentPlayer().getName();
         displayController.highlightCombination(winCombinations);
       } else {
@@ -139,7 +139,7 @@ const displayController = (() => {
   const message = game.querySelector('.message');
   const restartBtn = game.querySelector('.btn-restart');
 
-  const setMessage = (newMessage, endResult) => {
+  const setMessage = (newMessage, endResult = false) => {
     message.textContent = newMessage;
 
     if (endResult) {

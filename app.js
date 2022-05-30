@@ -78,7 +78,6 @@ const gameController = (() => {
       }
 
       isGameOver = true;
-      displayController.openEndGameModal(result);
       return;
     }
 
@@ -147,12 +146,10 @@ const displayController = (() => {
 
   fields.forEach((field) => {
     field.addEventListener('click', (e) => {
-      if (field.children[0].textContent !== '') {
-        return;
-      }
-
-      if (gameController.getIsGameOver()) {
-        displayController.openEndGameModal(gameController.getResult());
+      if (
+        field.children[0].textContent !== '' ||
+        gameController.getIsGameOver()
+      ) {
         return;
       }
 
@@ -182,6 +179,14 @@ const displayController = (() => {
     fieldTextElement.style.color = gameController.getCurrentPlayer().getColor();
 
     if (gameController.getIsGameOver()) {
+      const result = gameController.getResult();
+
+      if (result === 'Draw') {
+        setMessage(`It's a draw!`);
+      } else {
+        setMessage(`Winner: ${result}`);
+      }
+
       return;
     }
 
@@ -205,10 +210,6 @@ const displayController = (() => {
     combination.forEach((fieldIndex) => {
       fields[fieldIndex].style.background = 'var(--secondary-light)';
     });
-  };
-
-  const openEndGameModal = (result) => {
-    console.log(result);
   };
 
   startBtn.addEventListener('click', (e) =>
@@ -266,6 +267,5 @@ const displayController = (() => {
   return {
     setMessage,
     highlightCombination,
-    openEndGameModal,
   };
 })();

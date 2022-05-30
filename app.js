@@ -67,12 +67,12 @@ const gameController = (() => {
 
   const playRound = (fieldIndex) => {
     board.setField(fieldIndex, getCurrentPlayer().getSign());
-    const winCombination = checkWinner(fieldIndex);
+    const winCombinations = checkWinner(fieldIndex);
 
-    if (round === 9 || winCombination) {
-      if (winCombination) {
+    if (round === 9 || winCombinations.length > 0) {
+      if (winCombinations) {
         result = getCurrentPlayer().getName();
-        displayController.highlightCombination(winCombination);
+        displayController.highlightCombination(winCombinations);
       } else {
         result = 'Draw';
       }
@@ -105,7 +105,7 @@ const gameController = (() => {
 
     return winCombinations
       .filter((combination) => combination.includes(fieldIndex))
-      .find((winCombination) =>
+      .filter((winCombination) =>
         winCombination.every(
           (index) => board.getField(index) === getCurrentPlayer().getSign()
         )
@@ -139,9 +139,14 @@ const displayController = (() => {
   const message = game.querySelector('.message');
   const restartBtn = game.querySelector('.btn-restart');
 
-  const setMessage = (newMessage) => {
+  const setMessage = (newMessage, endResult) => {
     message.textContent = newMessage;
-    message.style.color = gameController.getCurrentPlayer().getColor();
+
+    if (endResult) {
+      message.style.color = '#dc2626';
+    } else {
+      message.style.color = gameController.getCurrentPlayer().getColor();
+    }
   };
 
   fields.forEach((field) => {
@@ -182,9 +187,9 @@ const displayController = (() => {
       const result = gameController.getResult();
 
       if (result === 'Draw') {
-        setMessage(`It's a draw!`);
+        setMessage(`Draw!`, true);
       } else {
-        setMessage(`Winner: ${result}`);
+        setMessage(`Winner: ${result}!`, true);
       }
 
       return;
@@ -206,9 +211,11 @@ const displayController = (() => {
     });
   };
 
-  const highlightCombination = (combination) => {
-    combination.forEach((fieldIndex) => {
-      fields[fieldIndex].style.background = 'var(--secondary-light)';
+  const highlightCombination = (combinations) => {
+    combinations.forEach((combination) => {
+      combination.forEach((fieldIndex) => {
+        fields[fieldIndex].style.background = 'var(--secondary-light)';
+      });
     });
   };
 

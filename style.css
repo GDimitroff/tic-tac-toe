@@ -189,6 +189,7 @@ form {
 }
 
 .message {
+  color: var(--secondary-dark);
   align-self: center;
 }
 

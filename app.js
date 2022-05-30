@@ -75,17 +75,12 @@ const gameController = (() => {
         result = 'draw';
       }
 
-      setCurrentPlayer();
       isGameOver = true;
       displayController.openEndGameModal(result);
       return;
     }
 
-    setCurrentPlayer();
     round++;
-    displayController.setMessage(
-      `Turn: ${getCurrentPlayer().getName()} (${getCurrentPlayer().getSign()})`
-    );
   };
 
   const reset = () => {
@@ -121,6 +116,7 @@ const gameController = (() => {
     getPlayer2,
     setPlayers,
     getCurrentPlayer,
+    setCurrentPlayer,
     playRound,
     getResult,
     getIsGameOver,
@@ -144,6 +140,7 @@ const displayController = (() => {
 
   const setMessage = (newMessage) => {
     message.textContent = newMessage;
+    message.style.color = gameController.getCurrentPlayer().getColor();
   };
 
   fields.forEach((field) => {
@@ -168,19 +165,30 @@ const displayController = (() => {
     gameController.reset();
     resetBoard();
     setMessage(
-      `Turn: ${gameController.getPlayer1().getName()} (${gameController
+      `${gameController.getPlayer1().getName()}'s turn: (${gameController
         .getPlayer1()
         .getSign()})`
     );
   });
 
   const updateBoard = (fieldIndex) => {
-    fields[fieldIndex].children[0].style.color = gameController
-      .getCurrentPlayer()
-      .getColor();
+    const fieldTextElement = fields[fieldIndex].children[0];
 
-    fields[fieldIndex].children[0].textContent = board.getField(fieldIndex);
-    fields[fieldIndex].children[0].classList.add('active');
+    fieldTextElement.textContent = board.getField(fieldIndex);
+    fieldTextElement.classList.add('active');
+
+    fieldTextElement.style.color = gameController.getCurrentPlayer().getColor();
+
+    if (gameController.getIsGameOver()) {
+      return;
+    }
+
+    gameController.setCurrentPlayer();
+    const currentPlayer = gameController.getCurrentPlayer();
+
+    setMessage(
+      `${currentPlayer.getName()}'s turn: (${currentPlayer.getSign()})`
+    );
   };
 
   const resetBoard = () => {
@@ -222,8 +230,8 @@ const displayController = (() => {
     const secondPlayer = Player(secondPlayerName, 'O', 'var(--primary-teal)');
     gameController.setPlayers(firstPlayer, secondPlayer);
     setMessage(
-      `Turn: ${gameController.getCurrentPlayer().getName()} (${gameController
-        .getCurrentPlayer()
+      `${gameController.getPlayer1().getName()}'s turn: (${gameController
+        .getPlayer1()
         .getSign()})`
     );
     e.target.reset();

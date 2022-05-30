@@ -1,8 +1,9 @@
-const Player = (name, sign) => {
+const Player = (name, sign, color) => {
   const getName = () => name;
   const getSign = () => sign;
+  const getColor = () => color;
 
-  return { getName, getSign };
+  return { getName, getSign, getColor };
 };
 
 const board = (() => {
@@ -32,6 +33,7 @@ const board = (() => {
 const gameController = (() => {
   let player1 = null;
   let player2 = null;
+  let currentPlayer = null;
   let round = 1;
   let result = null;
   let isGameOver = false;
@@ -42,6 +44,17 @@ const gameController = (() => {
   const setPlayers = (firstPlayer, secondPlayer) => {
     player1 = firstPlayer;
     player2 = secondPlayer;
+    currentPlayer = firstPlayer;
+  };
+
+  const getCurrentPlayer = () => {
+    return currentPlayer;
+  };
+
+  const setCurrentPlayer = () => {
+    currentPlayer === player1
+      ? (currentPlayer = player2)
+      : (currentPlayer = player1);
   };
 
   const getResult = () => {
@@ -53,23 +66,25 @@ const gameController = (() => {
   };
 
   const playRound = (fieldIndex) => {
-    board.setField(fieldIndex, getCurrentPlayerSign());
+    board.setField(fieldIndex, getCurrentPlayer().getSign());
 
     if (round === 9 || checkWinner(fieldIndex)) {
       if (checkWinner(fieldIndex)) {
-        result = getCurrentPlayerName();
+        result = getCurrentPlayer().getName();
       } else {
         result = 'draw';
       }
 
-      displayController.openEndGameModal(result);
+      setCurrentPlayer();
       isGameOver = true;
+      displayController.openEndGameModal(result);
       return;
     }
 
+    setCurrentPlayer();
     round++;
     displayController.setMessage(
-      `Turn: ${getCurrentPlayerName()} (${getCurrentPlayerSign()})`
+      `Turn: ${getCurrentPlayer().getName()} (${getCurrentPlayer().getSign()})`
     );
   };
 
@@ -77,6 +92,7 @@ const gameController = (() => {
     round = 1;
     isGameOver = false;
     result = null;
+    currentPlayer = player1;
   };
 
   const checkWinner = (fieldIndex) => {
@@ -95,23 +111,16 @@ const gameController = (() => {
       .filter((combination) => combination.includes(fieldIndex))
       .some((possibleCombination) =>
         possibleCombination.every(
-          (index) => board.getField(index) === getCurrentPlayerSign()
+          (index) => board.getField(index) === getCurrentPlayer().getSign()
         )
       );
-  };
-
-  const getCurrentPlayerName = () => {
-    return round % 2 === 1 ? player1.getName() : player2.getName();
-  };
-
-  const getCurrentPlayerSign = () => {
-    return round % 2 === 1 ? player1.getSign() : player2.getSign();
   };
 
   return {
     getPlayer1,
     getPlayer2,
     setPlayers,
+    getCurrentPlayer,
     playRound,
     getResult,
     getIsGameOver,
@@ -166,6 +175,10 @@ const displayController = (() => {
   });
 
   const updateBoard = (fieldIndex) => {
+    fields[fieldIndex].children[0].style.color = gameController
+      .getCurrentPlayer()
+      .getColor();
+
     fields[fieldIndex].children[0].textContent = board.getField(fieldIndex);
     fields[fieldIndex].children[0].classList.add('active');
   };
@@ -205,12 +218,12 @@ const displayController = (() => {
     const { player1: firstPlayerName, player2: secondPlayerName } =
       Object.fromEntries(formData);
 
-    const firstPlayer = Player(firstPlayerName, 'X');
-    const secondPlayer = Player(secondPlayerName, 'O');
+    const firstPlayer = Player(firstPlayerName, 'X', 'var(--primary-dark)');
+    const secondPlayer = Player(secondPlayerName, 'O', 'var(--primary-teal)');
     gameController.setPlayers(firstPlayer, secondPlayer);
     setMessage(
-      `Turn: ${gameController.getPlayer1().getName()} (${gameController
-        .getPlayer1()
+      `Turn: ${gameController.getCurrentPlayer().getName()} (${gameController
+        .getCurrentPlayer()
         .getSign()})`
     );
     e.target.reset();

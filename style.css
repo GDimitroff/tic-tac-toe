@@ -197,32 +197,28 @@ form {
   grid-template-columns: repeat(3, 100px);
   grid-template-rows: repeat(3, 100px);
   gap: 5px;
-  background-color: var(--primary-light);
+  background-color: var(--secondary-dark);
   margin: 3rem 0;
 }
 
 .field {
-  color: var(--primary-light);
-  background-color: var(--primary-teal);
-  border-radius: 4px;
+  background-color: var(--primary-light);
   display: flex;
   justify-content: center;
   align-items: center;
   transition: all 0.2s ease-in-out;
 }
 
-.field:hover {
-  background-color: var(--secondary-teal);
-}
-
 .field-text {
   font-size: 5.2rem;
+  transform: scale(0);
   opacity: 0;
 }
 
 .field-text.active {
+  transform: scale(1);
   opacity: 1;
-  transition: all 0.4s ease-in;
+  transition: all 0.3s ease-in;
 }
 
 .options {

@@ -35,7 +35,7 @@ body {
   color: var(--primary-dark);
   text-align: center;
   text-shadow: 4px 4px var(--primary-teal);
-  padding: 12rem 0 3rem 0;
+  padding: 12rem 0 6rem 0;
 }
 
 .game {
@@ -48,6 +48,14 @@ body {
   flex-direction: column;
   align-items: center;
   transition: all 0.4s ease-in-out;
+}
+
+.game-mode-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 28px;
+  transition: all 0.4s ease-in-out;
+  width: 100%;
 }
 
 .btn {
@@ -68,47 +76,26 @@ body {
   border-radius: 4px;
   cursor: pointer;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
-    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+    rgba(0, 0, 0, 0.3) 0px 16px 16px -8px;
   transition: all 0.4s ease-in-out;
-}
-
-i {
-  font-size: 2.2rem;
-  color: var(--primary-light);
-}
-
-.btn-start {
-  display: flex;
-  transform: scale(1);
-}
-
-.game-mode-buttons {
-  width: 100%;
-  display: none;
-  justify-content: space-between;
-  transform: scale(0);
-  transition: all 0.4s ease-in-out;
-}
-
-.game-mode-button {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.game-mode-button > p {
-  margin-bottom: 1rem;
-  font-size: 1.4rem;
 }
 
 .btn:hover {
-  box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+  animation: 0.7s ease-out infinite scale;
+}
+
+i {
+  font-size: 2.6rem;
+  color: var(--primary-light);
 }
 
 .btn-pve,
 .btn-pvp {
-  width: 16.2rem;
+  width: 16rem;
+  height: 8rem;
+  font-size: 2.2rem;
+  display: flex;
+  gap: 18px;
 }
 
 .btn-pve {
@@ -171,9 +158,10 @@ form {
   color: var(--secondary-dark);
 }
 
-.btn-submit {
+.btn.btn-submit {
   width: 100%;
   box-shadow: none;
+  animation: none;
 }
 
 .btn-submit:hover {
@@ -225,4 +213,18 @@ form {
 .options {
   display: flex;
   justify-content: space-between;
+}
+
+@keyframes scale {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: scale(1.05);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
 }

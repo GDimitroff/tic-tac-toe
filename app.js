@@ -129,7 +129,6 @@ const displayController = (() => {
   const game = document.querySelector('.game');
   const startScreen = game.querySelector('.start-screen');
   const gameScreen = game.querySelector('.game-screen');
-  const startBtn = game.querySelector('.btn-start');
   const pvpBtn = game.querySelector('.btn-pvp');
   const gameMode = game.querySelector('.game-mode-buttons');
   const players = game.querySelector('.players');
@@ -219,13 +218,12 @@ const displayController = (() => {
     });
   };
 
-  startBtn.addEventListener('click', (e) =>
-    handleTransition(e, startBtn, gameMode)
-  );
   pvpBtn.addEventListener('click', (e) =>
     handleTransition(e, gameMode, players)
   );
+
   form.addEventListener('submit', handleStartGame);
+  
   backBtn.addEventListener('click', (e) => {
     board.reset();
     gameController.reset();

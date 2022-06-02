@@ -254,7 +254,15 @@ body {
 
 .options {
   display: flex;
+  opacity: 0;
+  transform: scale(0);
   justify-content: space-between;
+  transition: all 0.4s ease-in-out;
+}
+
+.options.active {
+  opacity: 1;
+  transform: scale(1);
 }
 
 .options > .btn {

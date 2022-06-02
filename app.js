@@ -145,6 +145,7 @@ const displayController = (() => {
   const playersInfo = game.querySelectorAll('.player-info');
   const backBtn = game.querySelector('.btn-back');
   const fields = game.querySelectorAll('.field');
+  const optionButtons = game.querySelector('.options');
   const restartBtn = game.querySelector('.btn-restart');
 
   const setPlayersInfo = (firstPlayer, secondPlayer) => {
@@ -161,6 +162,14 @@ const displayController = (() => {
     } else {
       playersInfo[0].classList.remove('active');
       playersInfo[1].classList.add('active');
+    }
+  };
+
+  const setOptionButtons = (isEndRound) => {
+    if (isEndRound) {
+      optionButtons.classList.add('active');
+    } else {
+      optionButtons.classList.remove('active');
     }
   };
 
@@ -184,6 +193,7 @@ const displayController = (() => {
     gameController.reset();
     resetBoard();
     setPlayersInfo(gameController.getPlayer1(), gameController.getPlayer2());
+    setOptionButtons(false);
   });
 
   const updateBoard = (fieldIndex) => {
@@ -197,12 +207,7 @@ const displayController = (() => {
     if (gameController.getIsGameOver()) {
       const result = gameController.getResult();
 
-      // if (result === 'Draw') {
-      //   setPlayersInfo(`Draw!`, true);
-      // } else {
-      //   setPlayersInfo(`Winner: ${result}!`, true);
-      // }
-
+      setOptionButtons(true);
       return;
     }
 
@@ -254,6 +259,7 @@ const displayController = (() => {
 
     gameController.setPlayers(firstPlayer, secondPlayer);
     setPlayersInfo(firstPlayer, secondPlayer);
+    setOptionButtons(false);
 
     e.target.reset();
   }

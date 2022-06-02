@@ -36,22 +36,24 @@ body {
 }
 
 .header {
-  font-size: 3.8rem;
+  font-size: 5.2rem;
   color: var(--primary-dark);
   text-align: center;
   text-shadow: 4px 4px var(--primary-teal);
-  padding: 8rem 0 6rem 0;
+  padding-top: 6rem;
 }
 
 .game {
   display: flex;
   justify-content: center;
+  padding-top: 3rem;
 }
 
 .start-screen {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-top: 3rem;
   transition: all 0.4s ease-in-out;
 }
 
@@ -64,60 +66,46 @@ body {
 }
 
 .btn {
-  font-size: 1.8rem;
   font-family: inherit;
-  width: 12.6rem;
-  height: 4.6rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: var(--primary-light);
-  background: linear-gradient(
-    to left,
-    var(--primary-dark),
-    var(--primary-teal)
-  );
+  font-size: 2rem;
   border: none;
-  border-radius: 4px;
+  border-radius: 3px;
+  color: var(--primary-light);
+  background-color: var(--primary-dark);
   cursor: pointer;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
-    rgba(0, 0, 0, 0.3) 0px 16px 16px -8px;
   transition: all 0.4s ease-in-out;
 }
 
-.btn:hover {
-  animation: 0.7s ease-out infinite scale;
-}
-
-i {
-  font-size: 2.6rem;
-  color: var(--primary-light);
-}
-
-.btn-pve,
-.btn-pvp {
+.game-mode-buttons > .btn {
   width: 16rem;
-  height: 8rem;
-  font-size: 2.2rem;
+  height: 9rem;
   display: flex;
-  gap: 18px;
+  gap: 8px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-.btn-pve {
-  background: var(--primary-teal);
+.game-mode-buttons > .btn:hover {
+  color: var(--primary-teal);
+  box-shadow: 4px 4px var(--primary-teal);
 }
 
-.btn-back,
-.btn-restart,
-.btn-pvp {
-  background: var(--primary-dark);
+.game-mode-buttons > .btn > i {
+  font-size: 2.4rem;
+  color: var(--primary-light);
+  transition: all 0.4s ease-in-out;
 }
 
-.players {
+.game-mode-buttons > .btn:hover > i {
+  color: var(--primary-teal);
+}
+
+.form-container {
   display: flex;
   justify-content: center;
   margin-top: 5.2rem;
-  border-radius: 4px;
+  border-radius: 3px;
   padding: 2rem;
   transform: scale(0);
   transition: all 0.4s ease-in-out;
@@ -125,51 +113,56 @@ i {
     rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 }
 
-form {
+.form {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.inputs {
+.players-inputs {
   display: flex;
   gap: 18px;
 }
 
-.player {
+.player-input {
   width: 150px;
   display: flex;
   flex-direction: column;
 }
 
-.player > label {
+.player-input > label {
   font-size: 1.2rem;
   margin-bottom: 1rem;
 }
 
-.player > input {
+.player-input > input {
   text-align: center;
   font-family: inherit;
   font-size: 1.4rem;
   padding: 10px;
   border: 2px solid var(--primary-teal);
-  border-radius: 4px;
+  border-radius: 3px;
   outline: none;
   background: transparent;
 }
 
-.player > input::placeholder {
+.player-input > input:focus {
+  border: 2px solid var(--secondary-teal);
+}
+
+.player-input > input::placeholder {
   font-size: 1.2rem;
   color: var(--secondary-dark);
 }
 
-.btn.btn-submit {
+.btn-submit {
   width: 100%;
-  box-shadow: none;
-  animation: none;
+  background-color: var(--primary-teal);
+  padding: 1rem;
 }
 
 .btn-submit:hover {
+  background-color: var(--secondary-teal);
   box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
     rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 }
@@ -178,6 +171,7 @@ form {
   display: none;
   flex-direction: column;
   transform: scale(0);
+  padding-top: 1rem;
   transition: all 0.4s ease-in-out;
 }
 
@@ -185,7 +179,6 @@ form {
   font-size: 1.8rem;
   display: flex;
   justify-content: space-around;
-  margin-bottom: 2rem;
 }
 
 .player-info {
@@ -207,11 +200,11 @@ form {
 
 .board {
   display: grid;
-  grid-template-columns: repeat(3, 100px);
-  grid-template-rows: repeat(3, 100px);
+  grid-template-columns: repeat(3, 120px);
+  grid-template-rows: repeat(3, 120px);
   gap: 5px;
   background-color: var(--secondary-dark);
-  margin: 3rem 0;
+  margin: 2rem 0 3.6rem 0;
 }
 
 .field {
@@ -237,6 +230,16 @@ form {
 .options {
   display: flex;
   justify-content: space-between;
+}
+
+.options > button {
+  font-size: 1.2rem;
+  width: 80px;
+}
+
+.options > .btn-next {
+  font-size: 2.2rem;
+  width: 120px;
 }
 
 @keyframes scale {

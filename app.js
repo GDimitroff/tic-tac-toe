@@ -138,8 +138,8 @@ const displayController = (() => {
   const gameScreen = game.querySelector('.game-screen');
   const pvpBtn = game.querySelector('.btn-pvp');
   const gameMode = game.querySelector('.game-mode-buttons');
-  const players = game.querySelector('.players');
-  const form = game.querySelector('.players > form');
+  const players = game.querySelector('.form-container');
+  const form = game.querySelector('.form');
   const playersInfo = game.querySelectorAll('.player-info');
   const backBtn = game.querySelector('.btn-back');
   const fields = game.querySelectorAll('.field');

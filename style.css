@@ -13,6 +13,7 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html {
@@ -25,7 +26,6 @@ body {
   grid-template-rows: min-content auto;
   grid-template-columns: 1fr;
   margin: 0 auto;
-  width: 90%;
   max-width: 1440px;
   min-height: 100vh;
   min-height: -webkit-fill-available;
@@ -33,27 +33,27 @@ body {
   font-size: 1.6rem;
   color: var(--primary-dark);
   background-color: var(--primary-light);
+  user-select: none;
 }
 
 .header {
-  font-size: 5.6rem;
+  font-size: 4.6rem;
   color: var(--primary-dark);
   text-align: center;
   text-shadow: 4px 4px var(--primary-teal);
-  padding-top: 6rem;
+  padding-top: 4rem;
 }
 
 .game {
   display: flex;
   justify-content: center;
-  padding-top: 2rem;
+  margin-top: 6rem;
 }
 
 .start-screen {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 3rem;
   transition: all 0.4s ease-in-out;
 }
 
@@ -171,7 +171,6 @@ body {
   display: none;
   flex-direction: column;
   transform: scale(0);
-  padding-top: 1rem;
   transition: all 0.4s ease-in-out;
 }
 
@@ -281,16 +280,23 @@ body {
   width: 120px;
 }
 
-@keyframes scale {
-  0% {
-    transform: translateY(0);
-  }
+/************************************/
+/* BELOW 1200px (Landscape Tablets) */
+/************************************/
 
-  50% {
-    transform: scale(1.05);
-  }
+@media (max-width: 75em) {
+}
 
-  100% {
-    transform: translateY(0);
-  }
+/************************************/
+/* BELOW 940px (Tablets)            */
+/************************************/
+
+@media (max-width: 59em) {
+}
+
+/************************************/
+/* BELOW 544px (Phones)             */
+/************************************/
+
+@media (max-width: 34em) {
 }

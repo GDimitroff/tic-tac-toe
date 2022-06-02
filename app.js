@@ -1,9 +1,12 @@
-const Player = (name, sign, color) => {
+const Player = (name, sign, color, wins) => {
   const getName = () => name;
   const getSign = () => sign;
   const getColor = () => color;
+  const getWins = () => wins;
+  const incrementWins = () => (wins = wins + 1);
+  const resetWins = () => (wins = 0);
 
-  return { getName, getSign, getColor };
+  return { getName, getSign, getColor, getWins, incrementWins, resetWins };
 };
 
 const board = (() => {
@@ -71,7 +74,9 @@ const gameController = (() => {
 
     if (round === 9 || winCombinations.length > 0) {
       if (winCombinations.length > 0) {
+        getCurrentPlayer().incrementWins();
         result = getCurrentPlayer().getName();
+        displayController.setPlayersInfo(getPlayer1(), getPlayer2());
         displayController.highlightCombination(winCombinations);
       } else {
         result = 'Draw';
@@ -85,6 +90,8 @@ const gameController = (() => {
   };
 
   const reset = () => {
+    getPlayer1().resetWins();
+    getPlayer2().resetWins();
     round = 1;
     isGameOver = false;
     result = null;
@@ -133,19 +140,16 @@ const displayController = (() => {
   const gameMode = game.querySelector('.game-mode-buttons');
   const players = game.querySelector('.players');
   const form = game.querySelector('.players > form');
+  const playersInfo = game.querySelectorAll('.player-info');
   const backBtn = game.querySelector('.btn-back');
   const fields = game.querySelectorAll('.field');
-  const message = game.querySelector('.message');
   const restartBtn = game.querySelector('.btn-restart');
 
-  const setMessage = (newMessage, endResult = false) => {
-    message.textContent = newMessage;
-
-    if (endResult) {
-      message.style.color = '#dc2626';
-    } else {
-      message.style.color = gameController.getCurrentPlayer().getColor();
-    }
+  const setPlayersInfo = (firstPlayer, secondPlayer) => {
+    playersInfo[0].children[1].textContent = firstPlayer.getName();
+    playersInfo[1].children[1].textContent = secondPlayer.getName();
+    playersInfo[0].children[2].textContent = `Wins: ${firstPlayer.getWins()}`;
+    playersInfo[1].children[2].textContent = `Wins: ${secondPlayer.getWins()}`;
   };
 
   fields.forEach((field) => {
@@ -167,11 +171,7 @@ const displayController = (() => {
     board.reset();
     gameController.reset();
     resetBoard();
-    setMessage(
-      `${gameController.getPlayer1().getName()}'s turn: (${gameController
-        .getPlayer1()
-        .getSign()})`
-    );
+    setPlayersInfo(gameController.getPlayer1(), gameController.getPlayer2());
   });
 
   const updateBoard = (fieldIndex) => {
@@ -185,21 +185,21 @@ const displayController = (() => {
     if (gameController.getIsGameOver()) {
       const result = gameController.getResult();
 
-      if (result === 'Draw') {
-        setMessage(`Draw!`, true);
-      } else {
-        setMessage(`Winner: ${result}!`, true);
-      }
+      // if (result === 'Draw') {
+      //   setPlayersInfo(`Draw!`, true);
+      // } else {
+      //   setPlayersInfo(`Winner: ${result}!`, true);
+      // }
 
       return;
     }
 
     gameController.setCurrentPlayer();
-    const currentPlayer = gameController.getCurrentPlayer();
+    // const currentPlayer = gameController.getCurrentPlayer();
 
-    setMessage(
-      `${currentPlayer.getName()}'s turn: (${currentPlayer.getSign()})`
-    );
+    // setMessage(
+    //   `${currentPlayer.getName()}'s turn: (${currentPlayer.getSign()})`
+    // );
   };
 
   const resetBoard = () => {
@@ -223,7 +223,7 @@ const displayController = (() => {
   );
 
   form.addEventListener('submit', handleStartGame);
-  
+
   backBtn.addEventListener('click', (e) => {
     board.reset();
     gameController.reset();
@@ -241,14 +241,16 @@ const displayController = (() => {
     const { player1: firstPlayerName, player2: secondPlayerName } =
       Object.fromEntries(formData);
 
-    const firstPlayer = Player(firstPlayerName, 'X', 'var(--primary-dark)');
-    const secondPlayer = Player(secondPlayerName, 'O', 'var(--primary-teal)');
-    gameController.setPlayers(firstPlayer, secondPlayer);
-    setMessage(
-      `${gameController.getPlayer1().getName()}'s turn: (${gameController
-        .getPlayer1()
-        .getSign()})`
+    const firstPlayer = Player(firstPlayerName, 'X', 'var(--primary-dark)', 0);
+    const secondPlayer = Player(
+      secondPlayerName,
+      'O',
+      'var(--primary-teal)',
+      0
     );
+    gameController.setPlayers(firstPlayer, secondPlayer);
+    setPlayersInfo(firstPlayer, secondPlayer);
+
     e.target.reset();
   }
 
@@ -270,7 +272,7 @@ const displayController = (() => {
   }
 
   return {
-    setMessage,
+    setPlayersInfo,
     highlightCombination,
   };
 })();

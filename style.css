@@ -21,9 +21,14 @@ html {
 }
 
 body {
+  display: grid;
+  grid-template-rows: min-content auto;
+  grid-template-columns: 1fr;
+  margin: 0 auto;
+  width: 90%;
+  max-width: 1440px;
   min-height: 100vh;
   min-height: -webkit-fill-available;
-
   font-family: 'Black Ops One', cursive;
   font-size: 1.6rem;
   color: var(--primary-dark);
@@ -35,7 +40,7 @@ body {
   color: var(--primary-dark);
   text-align: center;
   text-shadow: 4px 4px var(--primary-teal);
-  padding: 12rem 0 6rem 0;
+  padding: 8rem 0 6rem 0;
 }
 
 .game {
@@ -174,6 +179,25 @@ form {
   flex-direction: column;
   transform: scale(0);
   transition: all 0.4s ease-in-out;
+}
+
+.players-info {
+  font-size: 1.8rem;
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 2rem;
+}
+
+.player-info {
+  text-align: center;
+}
+
+.sign {
+  font-size: 4.2rem;
+}
+
+.player-info:last-child {
+  color: var(--primary-teal);
 }
 
 .message {

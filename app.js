@@ -1,12 +1,14 @@
-const Player = (name, sign, color, wins) => {
+const Player = (name, sign, color) => {
+  let score = 0;
+
   const getName = () => name;
   const getSign = () => sign;
   const getColor = () => color;
-  const getWins = () => wins;
-  const incrementWins = () => (wins = wins + 1);
-  const resetWins = () => (wins = 0);
+  const getScore = () => score;
+  const winRound = () => (score += 1);
+  const resetScore = () => (score = 0);
 
-  return { getName, getSign, getColor, getWins, incrementWins, resetWins };
+  return { getName, getSign, getColor, getScore, winRound, resetScore };
 };
 
 const board = (() => {
@@ -74,7 +76,7 @@ const gameController = (() => {
 
     if (round === 9 || winCombinations.length > 0) {
       if (winCombinations.length > 0) {
-        getCurrentPlayer().incrementWins();
+        getCurrentPlayer().winRound();
         result = getCurrentPlayer().getName();
         displayController.setPlayersInfo(getPlayer1(), getPlayer2());
         displayController.highlightCombination(winCombinations);
@@ -90,8 +92,8 @@ const gameController = (() => {
   };
 
   const reset = () => {
-    getPlayer1().resetWins();
-    getPlayer2().resetWins();
+    getPlayer1().resetScore();
+    getPlayer2().resetScore();
     round = 1;
     isGameOver = false;
     result = null;
@@ -148,8 +150,18 @@ const displayController = (() => {
   const setPlayersInfo = (firstPlayer, secondPlayer) => {
     playersInfo[0].children[1].textContent = firstPlayer.getName();
     playersInfo[1].children[1].textContent = secondPlayer.getName();
-    playersInfo[0].querySelector('.wins').textContent = firstPlayer.getWins();
-    playersInfo[1].querySelector('.wins').textContent = secondPlayer.getWins();
+    playersInfo[0].querySelector('.wins').textContent = firstPlayer.getScore();
+    playersInfo[1].querySelector('.wins').textContent = secondPlayer.getScore();
+
+    const currentPlayer = gameController.getCurrentPlayer();
+
+    if (currentPlayer.getSign() === 'X') {
+      playersInfo[0].classList.add('active');
+      playersInfo[1].classList.remove('active');
+    } else {
+      playersInfo[0].classList.remove('active');
+      playersInfo[1].classList.add('active');
+    }
   };
 
   fields.forEach((field) => {
@@ -195,11 +207,7 @@ const displayController = (() => {
     }
 
     gameController.setCurrentPlayer();
-    // const currentPlayer = gameController.getCurrentPlayer();
-
-    // setMessage(
-    //   `${currentPlayer.getName()}'s turn: (${currentPlayer.getSign()})`
-    // );
+    setPlayersInfo(gameController.getPlayer1(), gameController.getPlayer2());
   };
 
   const resetBoard = () => {
@@ -241,13 +249,9 @@ const displayController = (() => {
     const { player1: firstPlayerName, player2: secondPlayerName } =
       Object.fromEntries(formData);
 
-    const firstPlayer = Player(firstPlayerName, 'X', 'var(--primary-dark)', 0);
-    const secondPlayer = Player(
-      secondPlayerName,
-      'O',
-      'var(--primary-teal)',
-      0
-    );
+    const firstPlayer = Player(firstPlayerName, 'X', 'var(--primary-dark)');
+    const secondPlayer = Player(secondPlayerName, 'O', 'var(--primary-teal)');
+
     gameController.setPlayers(firstPlayer, secondPlayer);
     setPlayersInfo(firstPlayer, secondPlayer);
 

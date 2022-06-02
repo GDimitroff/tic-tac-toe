@@ -46,7 +46,7 @@ body {
 .game {
   display: flex;
   justify-content: center;
-  padding-top: 3rem;
+  padding-top: 2rem;
 }
 
 .start-screen {
@@ -187,8 +187,22 @@ body {
 }
 
 .player-info {
+  position: relative;
   min-width: 100px;
   text-align: center;
+}
+
+.player-info.active::after {
+  content: '';
+  width: 100px;
+  height: 132px;
+  border-radius: 3px;
+  background-color: rgb(20, 184, 165);
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  transform: translate(-50%);
+  z-index: -1;
 }
 
 .sign {
@@ -215,7 +229,7 @@ body {
   grid-template-rows: repeat(3, 120px);
   gap: 5px;
   background-color: var(--secondary-dark);
-  margin: 2rem 0 3.6rem 0;
+  margin: 3.6rem 0;
 }
 
 .field {
@@ -257,4 +271,18 @@ body {
 .options > .btn-next {
   font-size: 2.8rem;
   width: 120px;
+}
+
+@keyframes scale {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: scale(1.05);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
 }

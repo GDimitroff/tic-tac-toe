@@ -91,6 +91,13 @@ const gameController = (() => {
     round++;
   };
 
+  const setNewRound = () => {
+    round = 1;
+    isGameOver = false;
+    result = null;
+    currentPlayer = player1;
+  };
+
   const reset = () => {
     getPlayer1().resetScore();
     getPlayer2().resetScore();
@@ -130,6 +137,7 @@ const gameController = (() => {
     playRound,
     getResult,
     getIsGameOver,
+    setNewRound,
     reset,
   };
 })();
@@ -143,9 +151,10 @@ const displayController = (() => {
   const players = game.querySelector('.form-container');
   const form = game.querySelector('.form');
   const playersInfo = game.querySelectorAll('.player-info');
-  const backBtn = game.querySelector('.btn-back');
   const fields = game.querySelectorAll('.field');
   const optionButtons = game.querySelector('.options');
+  const backBtn = game.querySelector('.btn-back');
+  const nextRoundBtn = game.querySelector('.btn-next');
   const restartBtn = game.querySelector('.btn-restart');
 
   const setPlayersInfo = (firstPlayer, secondPlayer) => {
@@ -186,14 +195,6 @@ const displayController = (() => {
       gameController.playRound(fieldIndex);
       updateBoard(fieldIndex);
     });
-  });
-
-  restartBtn.addEventListener('click', (e) => {
-    board.reset();
-    gameController.reset();
-    resetBoard();
-    setPlayersInfo(gameController.getPlayer1(), gameController.getPlayer2());
-    setOptionButtons(false);
   });
 
   const updateBoard = (fieldIndex) => {
@@ -237,12 +238,28 @@ const displayController = (() => {
 
   form.addEventListener('submit', handleStartGame);
 
+  nextRoundBtn.addEventListener('click', (e) => {
+    board.reset();
+    gameController.setNewRound();
+    resetBoard();
+    setPlayersInfo(gameController.getPlayer1(), gameController.getPlayer2());
+    setOptionButtons(false);
+  });
+
   backBtn.addEventListener('click', (e) => {
     board.reset();
     gameController.reset();
     resetBoard();
 
     handleTransition(e, gameScreen, startScreen);
+  });
+
+  restartBtn.addEventListener('click', (e) => {
+    board.reset();
+    gameController.reset();
+    resetBoard();
+    setPlayersInfo(gameController.getPlayer1(), gameController.getPlayer2());
+    setOptionButtons(false);
   });
 
   function handleStartGame(e) {

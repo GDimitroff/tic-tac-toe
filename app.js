@@ -148,8 +148,8 @@ const displayController = (() => {
   const setPlayersInfo = (firstPlayer, secondPlayer) => {
     playersInfo[0].children[1].textContent = firstPlayer.getName();
     playersInfo[1].children[1].textContent = secondPlayer.getName();
-    playersInfo[0].children[2].textContent = `Wins: ${firstPlayer.getWins()}`;
-    playersInfo[1].children[2].textContent = `Wins: ${secondPlayer.getWins()}`;
+    playersInfo[0].querySelector('.wins').textContent = firstPlayer.getWins();
+    playersInfo[1].querySelector('.wins').textContent = secondPlayer.getWins();
   };
 
   fields.forEach((field) => {

@@ -36,7 +36,7 @@ body {
 }
 
 .header {
-  font-size: 5.2rem;
+  font-size: 5.6rem;
   color: var(--primary-dark);
   text-align: center;
   text-shadow: 4px 4px var(--primary-teal);
@@ -178,10 +178,16 @@ body {
 .players-info {
   font-size: 1.8rem;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--primary-dark);
+  color: var(--primary-light);
+  padding: 1rem 2rem;
+  border-radius: 3px;
 }
 
 .player-info {
+  min-width: 100px;
   text-align: center;
 }
 
@@ -189,13 +195,18 @@ body {
   font-size: 4.2rem;
 }
 
-.player-info:last-child {
-  color: var(--primary-teal);
+.name {
+  color: var(--secondary-dark);
 }
 
-.message {
-  color: var(--secondary-dark);
-  align-self: center;
+.wins {
+  display: inline-block;
+  min-width: 15px;
+}
+
+.vs {
+  color: #e11d48;
+  font-size: 4.2rem;
 }
 
 .board {
@@ -232,26 +243,18 @@ body {
   justify-content: space-between;
 }
 
-.options > button {
-  font-size: 1.2rem;
+.options > .btn {
+  font-size: 2rem;
+  color: var(--primary-dark);
+  background: none;
   width: 80px;
 }
 
-.options > .btn-next {
-  font-size: 2.2rem;
-  width: 120px;
+.options > .btn:hover {
+  color: var(--primary-teal);
 }
 
-@keyframes scale {
-  0% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: scale(1.05);
-  }
-
-  100% {
-    transform: translateY(0);
-  }
+.options > .btn-next {
+  font-size: 2.8rem;
+  width: 120px;
 }

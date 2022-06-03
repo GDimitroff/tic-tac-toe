@@ -83,14 +83,13 @@ body {
 .game-mode-buttons {
   display: flex;
   justify-content: space-between;
-  gap: 28px;
+  gap: 18px;
   transition: all 0.4s ease-in-out;
-  width: 100%;
 }
 
 .game-mode-buttons > .btn {
-  width: 16rem;
-  height: 9rem;
+  width: 50%;
+  padding: 1.8rem;
   display: flex;
   gap: 8px;
   flex-direction: column;
@@ -99,34 +98,28 @@ body {
 }
 
 .btn-start:hover,
-.game-mode-buttons > .btn:hover {
+.game-mode-buttons > .btn:hover,
+.game-mode-buttons > .btn.active {
   color: var(--primary-teal);
   box-shadow: 4px 4px var(--primary-teal);
 }
 
 .game-mode-buttons > .btn > i {
   font-size: 2.4rem;
-  color: var(--primary-light);
-  transition: all 0.4s ease-in-out;
-}
-
-.game-mode-buttons > .btn:hover > i {
-  color: var(--primary-teal);
 }
 
 .form-container {
   display: flex;
   justify-content: center;
-  margin-top: 5.2rem;
+  margin-top: 3.2rem;
   border-radius: 3px;
   padding: 2rem;
-  transform: scale(0);
-  transition: all 0.4s ease-in-out;
+  opacity: 0;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
     rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 }
 
-.form {
+.form-pvp {
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -138,7 +131,6 @@ body {
 }
 
 .player-input {
-  width: 150px;
   display: flex;
   flex-direction: column;
 }
@@ -183,8 +175,8 @@ body {
 .game-screen {
   display: none;
   flex-direction: column;
-  transform: scale(0);
-  transition: all 0.4s ease-in-out;
+  opacity: 0;
+  animation: 0.4s ease-in-out fade-in;
 }
 
 .players-info {

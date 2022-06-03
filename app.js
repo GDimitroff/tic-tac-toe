@@ -150,8 +150,8 @@ const displayController = (() => {
   const gameScreen = game.querySelector('.game-screen');
   const pvpBtn = game.querySelector('.btn-pvp');
   const gameMode = game.querySelector('.game-mode-buttons');
-  const players = game.querySelector('.form-container');
-  const form = game.querySelector('.form');
+  const formContainer = game.querySelector('.form-container');
+  const formPvP = game.querySelector('.form-pvp');
   const playersInfo = game.querySelectorAll('.player-info');
   const fields = game.querySelectorAll('.field');
   const optionButtons = game.querySelector('.options');
@@ -167,27 +167,63 @@ const displayController = (() => {
     { once: true }
   );
 
-  startBtn.addEventListener('click', (e) => {
-    startScreen.style.animation = '0.4s ease-in-out fade-out';
+  startBtn.addEventListener('click', (e) =>
+    handleScreenTransition(e, startScreen, settingsScreen)
+  );
 
-    startScreen.addEventListener(
+  pvpBtn.addEventListener('click', (e) => {
+    pvpBtn.classList.add('active');
+    formContainer.style.animation = '0.4s ease-in-out fade-in';
+
+    formContainer.addEventListener(
       'animationend',
       (e) => {
-        startScreen.style.opacity = '0';
-        startScreen.style.display = 'none';
-        settingsScreen.style.display = 'block';
+        formContainer.style.opacity = '1';
+      },
+      { once: true }
+    );
+  });
 
-        settingsScreen.addEventListener(
+  formPvP.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    handleScreenTransition(e, settingsScreen, gameScreen);
+
+    const formData = new FormData(e.target);
+    const { player1: firstPlayerName, player2: secondPlayerName } =
+      Object.fromEntries(formData);
+
+    const firstPlayer = Player(firstPlayerName, 'X', 'var(--primary-dark)');
+    const secondPlayer = Player(secondPlayerName, 'O', 'var(--primary-teal)');
+
+    gameController.setPlayers(firstPlayer, secondPlayer);
+    setPlayersInfo(firstPlayer, secondPlayer);
+    setEndRoundButtons(false);
+
+    e.target.reset();
+  });
+
+  function handleScreenTransition(e, fadeOutScreen, fadeInScreen) {
+    fadeOutScreen.style.animation = '0.4s ease-in-out fade-out';
+
+    fadeOutScreen.addEventListener(
+      'animationend',
+      (e) => {
+        fadeOutScreen.style.opacity = '0';
+        fadeOutScreen.style.display = 'none';
+        fadeInScreen.style.display = 'block';
+
+        fadeInScreen.addEventListener(
           'animationend',
           (e) => {
-            settingsScreen.style.opacity = '1';
+            fadeInScreen.style.opacity = '1';
           },
           { once: true }
         );
       },
       { once: true }
     );
-  });
+  }
 
   const setPlayersInfo = (firstPlayer, secondPlayer) => {
     playersInfo[0].children[1].textContent = firstPlayer.getName();
@@ -206,7 +242,7 @@ const displayController = (() => {
     }
   };
 
-  const setOptionButtons = (isEndRound) => {
+  const setEndRoundButtons = (isEndRound) => {
     if (isEndRound) {
       optionButtons.classList.add('active');
     } else {
@@ -240,7 +276,7 @@ const displayController = (() => {
     if (gameController.getIsGameOver()) {
       const result = gameController.getResult();
 
-      setOptionButtons(true);
+      setEndRoundButtons(true);
       return;
     }
 
@@ -264,18 +300,12 @@ const displayController = (() => {
     });
   };
 
-  pvpBtn.addEventListener('click', (e) =>
-    handleTransition(e, gameMode, players)
-  );
-
-  form.addEventListener('submit', handleStartGame);
-
   nextRoundBtn.addEventListener('click', (e) => {
     board.reset();
     gameController.setNewRound();
     resetBoard();
     setPlayersInfo(gameController.getPlayer1(), gameController.getPlayer2());
-    setOptionButtons(false);
+    setEndRoundButtons(false);
   });
 
   backBtn.addEventListener('click', (e) => {
@@ -283,7 +313,7 @@ const displayController = (() => {
     gameController.reset();
     resetBoard();
 
-    handleTransition(e, gameScreen, startScreen);
+    handleScreenTransition(e, gameScreen, settingsScreen);
   });
 
   restartBtn.addEventListener('click', (e) => {
@@ -291,44 +321,8 @@ const displayController = (() => {
     gameController.reset();
     resetBoard();
     setPlayersInfo(gameController.getPlayer1(), gameController.getPlayer2());
-    setOptionButtons(false);
+    setEndRoundButtons(false);
   });
-
-  function handleStartGame(e) {
-    e.preventDefault();
-
-    handleTransition(e, settingsScreen, gameScreen);
-
-    const formData = new FormData(e.target);
-    const { player1: firstPlayerName, player2: secondPlayerName } =
-      Object.fromEntries(formData);
-
-    const firstPlayer = Player(firstPlayerName, 'X', 'var(--primary-dark)');
-    const secondPlayer = Player(secondPlayerName, 'O', 'var(--primary-teal)');
-
-    gameController.setPlayers(firstPlayer, secondPlayer);
-    setPlayersInfo(firstPlayer, secondPlayer);
-    setOptionButtons(false);
-
-    e.target.reset();
-  }
-
-  function handleTransition(e, fadeOutElement, fadeInElement) {
-    if (fadeOutElement.classList.contains('game-mode-buttons')) {
-      fadeInElement.style.transform = 'scale(1)';
-      return;
-    }
-
-    fadeOutElement.style.transform = 'scale(0)';
-    fadeOutElement.addEventListener('transitionend', handleTransitionEnd);
-
-    function handleTransitionEnd(e) {
-      fadeOutElement.removeEventListener('transitionend', handleTransitionEnd);
-      fadeInElement.style.display = 'flex';
-      fadeOutElement.style.display = 'none';
-      fadeInElement.style.transform = 'scale(1)';
-    }
-  }
 
   return {
     setPlayersInfo,

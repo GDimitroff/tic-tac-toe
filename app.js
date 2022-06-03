@@ -212,6 +212,7 @@ const displayController = (() => {
         fadeOutScreen.style.opacity = '0';
         fadeOutScreen.style.display = 'none';
         fadeInScreen.style.display = 'block';
+        fadeInScreen.style.animation = '0.4s ease-in-out fade-in';
 
         fadeInScreen.addEventListener(
           'animationend',

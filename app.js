@@ -145,6 +145,8 @@ const gameController = (() => {
 const displayController = (() => {
   const game = document.querySelector('.game');
   const startScreen = game.querySelector('.start-screen');
+  const startBtn = game.querySelector('.btn-start');
+  const settingsScreen = game.querySelector('.settings-screen');
   const gameScreen = game.querySelector('.game-screen');
   const pvpBtn = game.querySelector('.btn-pvp');
   const gameMode = game.querySelector('.game-mode-buttons');
@@ -156,6 +158,36 @@ const displayController = (() => {
   const backBtn = game.querySelector('.btn-back');
   const nextRoundBtn = game.querySelector('.btn-next');
   const restartBtn = game.querySelector('.btn-restart');
+
+  startScreen.addEventListener(
+    'animationend',
+    (e) => {
+      startScreen.style.opacity = '1';
+    },
+    { once: true }
+  );
+
+  startBtn.addEventListener('click', (e) => {
+    startScreen.style.animation = '0.4s ease-in-out fade-out';
+
+    startScreen.addEventListener(
+      'animationend',
+      (e) => {
+        startScreen.style.opacity = '0';
+        startScreen.style.display = 'none';
+        settingsScreen.style.display = 'block';
+
+        settingsScreen.addEventListener(
+          'animationend',
+          (e) => {
+            settingsScreen.style.opacity = '1';
+          },
+          { once: true }
+        );
+      },
+      { once: true }
+    );
+  });
 
   const setPlayersInfo = (firstPlayer, secondPlayer) => {
     playersInfo[0].children[1].textContent = firstPlayer.getName();
@@ -265,7 +297,7 @@ const displayController = (() => {
   function handleStartGame(e) {
     e.preventDefault();
 
-    handleTransition(e, startScreen, gameScreen);
+    handleTransition(e, settingsScreen, gameScreen);
 
     const formData = new FormData(e.target);
     const { player1: firstPlayerName, player2: secondPlayerName } =

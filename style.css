@@ -34,6 +34,12 @@ body {
   user-select: none;
 }
 
+.game {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .start-screen {
   display: flex;
   flex-direction: column;
@@ -75,9 +81,9 @@ body {
 }
 
 .settings-screen {
+  max-width: 90%;
   display: none;
   opacity: 0;
-  /* animation: 0.4s ease-in-out fade-in; */
 }
 
 .game-mode-buttons {
@@ -141,6 +147,7 @@ body {
 }
 
 .player-input > input {
+  width: 100%;
   text-align: center;
   font-family: inherit;
   font-size: 1.4rem;
@@ -161,7 +168,6 @@ body {
 }
 
 .btn-submit {
-  width: 100%;
   background-color: var(--primary-teal);
   padding: 1rem;
 }
@@ -176,7 +182,6 @@ body {
   display: none;
   flex-direction: column;
   opacity: 0;
-  /* animation: 0.4s ease-in-out fade-in; */
 }
 
 .players-info {
@@ -199,7 +204,7 @@ body {
 .player-info.active::after {
   content: '';
   width: 100px;
-  height: 132px;
+  height: 134px;
   border-radius: 3px;
   background-color: rgb(20, 184, 165);
   position: absolute;
@@ -233,7 +238,7 @@ body {
   grid-template-rows: repeat(3, 120px);
   gap: 5px;
   background-color: var(--secondary-dark);
-  margin: 3.6rem 0;
+  margin: 6.6rem 0;
 }
 
 .field {
@@ -313,17 +318,23 @@ body {
 }
 
 /************************************/
-/* BELOW 1200px (Landscape Tablets) */
-/************************************/
-
-@media (max-width: 75em) {
-}
-
-/************************************/
 /* BELOW 940px (Tablets)            */
 /************************************/
 
 @media (max-width: 59em) {
+  html {
+    font-size: 56.25%;
+  }
+
+  .header {
+    font-size: 3.8rem;
+  }
+
+  .player-info.active::after {
+    width: 90px;
+    height: 124px;
+    top: -18px;
+  }
 }
 
 /************************************/
@@ -331,4 +342,22 @@ body {
 /************************************/
 
 @media (max-width: 34em) {
+  html {
+    font-size: 50%;
+  }
+
+  .header {
+    font-size: 2.8rem;
+  }
+
+  .player-info.active::after {
+    width: 80px;
+    height: 114px;
+    top: -18px;
+  }
+
+  .board {
+    grid-template-columns: repeat(3, 90px);
+    grid-template-rows: repeat(3, 90px);
+  }
 }

@@ -40,7 +40,6 @@ const gameController = (() => {
   let player2 = null;
   let currentPlayer = null;
   let round = 1;
-  let result = null;
   let isGameOver = false;
 
   const getPlayer1 = () => player1;
@@ -62,10 +61,6 @@ const gameController = (() => {
       : (currentPlayer = player1);
   };
 
-  const getResult = () => {
-    return result;
-  };
-
   const getIsGameOver = () => {
     return isGameOver;
   };
@@ -77,11 +72,8 @@ const gameController = (() => {
     if (round === 9 || winCombinations.length > 0) {
       if (winCombinations.length > 0) {
         getCurrentPlayer().winRound();
-        result = getCurrentPlayer().getName();
         displayController.setPlayersInfo(getPlayer1(), getPlayer2());
         displayController.highlightCombination(winCombinations);
-      } else {
-        result = 'Draw';
       }
 
       isGameOver = true;
@@ -94,7 +86,6 @@ const gameController = (() => {
   const setNewRound = () => {
     round = 1;
     isGameOver = false;
-    result = null;
     currentPlayer = player1;
   };
 
@@ -103,7 +94,6 @@ const gameController = (() => {
     getPlayer2().resetScore();
     round = 1;
     isGameOver = false;
-    result = null;
     currentPlayer = player1;
   };
 
@@ -135,7 +125,6 @@ const gameController = (() => {
     getCurrentPlayer,
     setCurrentPlayer,
     playRound,
-    getResult,
     getIsGameOver,
     setNewRound,
     reset,
@@ -149,7 +138,6 @@ const displayController = (() => {
   const settingsScreen = game.querySelector('.settings-screen');
   const gameScreen = game.querySelector('.game-screen');
   const pvpBtn = game.querySelector('.btn-pvp');
-  const gameMode = game.querySelector('.game-mode-buttons');
   const formContainer = game.querySelector('.form-container');
   const formPvP = game.querySelector('.form-pvp');
   const playersInfo = game.querySelectorAll('.player-info');
@@ -203,7 +191,7 @@ const displayController = (() => {
     e.target.reset();
   });
 
-  function handleScreenTransition(e, fadeOutScreen, fadeInScreen) {
+  const handleScreenTransition = (e, fadeOutScreen, fadeInScreen) => {
     fadeOutScreen.style.animation = '0.4s ease-in-out fade-out';
 
     fadeOutScreen.addEventListener(
@@ -224,7 +212,7 @@ const displayController = (() => {
       },
       { once: true }
     );
-  }
+  };
 
   const setPlayersInfo = (firstPlayer, secondPlayer) => {
     playersInfo[0].children[1].textContent = firstPlayer.getName();
@@ -243,11 +231,17 @@ const displayController = (() => {
     }
   };
 
-  const setEndRoundButtons = (isEndRound) => {
+  const setEndRoundButtons = (isEndRound, firstLoading = true) => {
+    if (firstLoading) return;
+
     if (isEndRound) {
-      optionButtons.classList.add('active');
+      optionButtons.style.animation = '0.4s ease-in-out fade-in';
+      optionButtons.style.opacity = '1';
+      optionButtons.style.pointerEvents = 'auto';
     } else {
-      optionButtons.classList.remove('active');
+      optionButtons.style.animation = '0.4s ease-in-out fade-out';
+      optionButtons.style.opacity = '0';
+      optionButtons.style.pointerEvents = 'none';
     }
   };
 
@@ -275,9 +269,7 @@ const displayController = (() => {
     fieldTextElement.style.color = gameController.getCurrentPlayer().getColor();
 
     if (gameController.getIsGameOver()) {
-      const result = gameController.getResult();
-
-      setEndRoundButtons(true);
+      setEndRoundButtons(true, false);
       return;
     }
 
@@ -306,7 +298,7 @@ const displayController = (() => {
     gameController.setNewRound();
     resetBoard();
     setPlayersInfo(gameController.getPlayer1(), gameController.getPlayer2());
-    setEndRoundButtons(false);
+    setEndRoundButtons(false, false);
   });
 
   backBtn.addEventListener('click', (e) => {
@@ -322,7 +314,7 @@ const displayController = (() => {
     gameController.reset();
     resetBoard();
     setPlayersInfo(gameController.getPlayer1(), gameController.getPlayer2());
-    setEndRoundButtons(false);
+    setEndRoundButtons(false, false);
   });
 
   return {

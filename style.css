@@ -81,7 +81,7 @@ body {
 }
 
 .settings-screen {
-  max-width: 90%;
+  max-width: 80%;
   display: none;
   opacity: 0;
 }
@@ -264,14 +264,8 @@ body {
 .options {
   display: flex;
   opacity: 0;
-  transform: scale(0);
   justify-content: space-between;
-  transition: all 0.4s ease-in-out;
-}
-
-.options.active {
-  opacity: 1;
-  transform: scale(1);
+  pointer-events: none;
 }
 
 .options > .btn {

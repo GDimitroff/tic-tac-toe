@@ -67,7 +67,7 @@ const gameController = (() => {
     return isGameOver;
   };
 
-  const playRound = (fieldIndex) => {
+  const playerTurn = (fieldIndex) => {
     board.setField(fieldIndex, getCurrentPlayer().getSign());
     const winCombinations = checkWinner(fieldIndex);
 
@@ -85,7 +85,7 @@ const gameController = (() => {
     round++;
   };
 
-  const botPlays = (botFieldIndex) => {
+  const botTurn = (botFieldIndex) => {
     board.setField(botFieldIndex, getPlayer2().getSign());
     const AIWinCombinations = checkWinner(botFieldIndex);
 
@@ -103,7 +103,7 @@ const gameController = (() => {
     round++;
   };
 
-  const getRandomMove = () => {
+  const getRandomBotMove = () => {
     const possibleMoves = [];
     board.getBoard().filter((field, i) => {
       if (field === '') {
@@ -157,9 +157,9 @@ const gameController = (() => {
     setPlayers,
     getCurrentPlayer,
     setCurrentPlayer,
-    playRound,
-    botPlays,
-    getRandomMove,
+    playerTurn,
+    botTurn,
+    getRandomBotMove,
     getIsGameOver,
     setNewRound,
     reset,
@@ -293,7 +293,10 @@ const displayController = (() => {
   };
 
   const setEndRoundButtons = (isEndRound, firstLoading = true) => {
-    if (firstLoading) return;
+    if (firstLoading) {
+      optionButtons.removeAttribute('style');
+      return;
+    }
 
     if (isEndRound) {
       optionButtons.style.animation = '0.4s ease-in-out fade-in';
@@ -316,17 +319,15 @@ const displayController = (() => {
       }
 
       const fieldIndex = parseInt(e.target.dataset.index);
-      gameController.playRound(fieldIndex);
+      gameController.playerTurn(fieldIndex);
       updateBoard(fieldIndex);
 
       if (gameController.getPlayer2().getName() === 'AI') {
         if (gameController.getIsGameOver()) return;
-        
-        setTimeout(() => {
-          const botFieldIndex = gameController.getRandomMove();
-          gameController.botPlays(botFieldIndex);
-          updateBoard(botFieldIndex);
-        }, 700);
+
+        const botFieldIndex = gameController.getRandomBotMove();
+        gameController.botTurn(botFieldIndex);
+        updateBoard(botFieldIndex);
       }
     });
   });

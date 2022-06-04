@@ -14,6 +14,8 @@ const Player = (name, sign, color) => {
 const board = (() => {
   const board = ['', '', '', '', '', '', '', '', ''];
 
+  const getBoard = () => board;
+
   const getField = (index) => {
     if (index > board.length) return;
 
@@ -32,7 +34,7 @@ const board = (() => {
     }
   };
 
-  return { getField, setField, reset };
+  return { getBoard, getField, setField, reset };
 })();
 
 const gameController = (() => {
@@ -83,6 +85,37 @@ const gameController = (() => {
     round++;
   };
 
+  const botPlays = (botFieldIndex) => {
+    board.setField(botFieldIndex, getPlayer2().getSign());
+    const AIWinCombinations = checkWinner(botFieldIndex);
+
+    if (round === 9 || AIWinCombinations.length > 0) {
+      if (AIWinCombinations.length > 0) {
+        getPlayer2().winRound();
+        displayController.setPlayersInfo(getPlayer1(), getPlayer2());
+        displayController.highlightCombination(AIWinCombinations);
+      }
+
+      isGameOver = true;
+      return;
+    }
+
+    round++;
+  };
+
+  const getRandomMove = () => {
+    const possibleMoves = [];
+    board.getBoard().filter((field, i) => {
+      if (field === '') {
+        possibleMoves.push(i);
+      }
+    });
+
+    const fieldIndex =
+      possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
+    return fieldIndex;
+  };
+
   const setNewRound = () => {
     round = 1;
     isGameOver = false;
@@ -125,6 +158,8 @@ const gameController = (() => {
     getCurrentPlayer,
     setCurrentPlayer,
     playRound,
+    botPlays,
+    getRandomMove,
     getIsGameOver,
     setNewRound,
     reset,
@@ -197,16 +232,18 @@ const displayController = (() => {
   function handleForm(e) {
     e.preventDefault();
 
-    const { target } = e;
-    const gameMode = target.classList.contains('form-pve') ? 'pve' : 'pvp';
-
     const formData = new FormData(e.target);
-    console.log(formData.values);
     const { player1: firstPlayerName, player2: secondPlayerName } =
       Object.fromEntries(formData);
 
     const firstPlayer = Player(firstPlayerName, 'X', 'var(--primary-dark)');
-    const secondPlayer = Player(secondPlayerName, 'O', 'var(--primary-teal)');
+    let secondPlayer = undefined;
+    if (!secondPlayerName) {
+      secondPlayer = Player('AI', 'O', 'var(--primary-teal)');
+    } else {
+      secondPlayer = Player(secondPlayerName, 'O', 'var(--primary-teal)');
+    }
+
     gameController.setPlayers(firstPlayer, secondPlayer);
 
     handleScreenTransition(e, settingsScreen, gameScreen);
@@ -281,6 +318,16 @@ const displayController = (() => {
       const fieldIndex = parseInt(e.target.dataset.index);
       gameController.playRound(fieldIndex);
       updateBoard(fieldIndex);
+
+      if (gameController.getPlayer2().getName() === 'AI') {
+        if (gameController.getIsGameOver()) return;
+        
+        setTimeout(() => {
+          const botFieldIndex = gameController.getRandomMove();
+          gameController.botPlays(botFieldIndex);
+          updateBoard(botFieldIndex);
+        }, 700);
+      }
     });
   });
 
@@ -331,6 +378,7 @@ const displayController = (() => {
     resetBoard();
 
     pvpBtn.classList.remove('active');
+    pveBtn.classList.remove('active');
     formsContainer.removeAttribute('style');
     handleScreenTransition(e, gameScreen, settingsScreen);
   });

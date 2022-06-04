@@ -137,8 +137,10 @@ const displayController = (() => {
   const startBtn = game.querySelector('.btn-start');
   const settingsScreen = game.querySelector('.settings-screen');
   const gameScreen = game.querySelector('.game-screen');
+  const pveBtn = game.querySelector('.btn-pve');
   const pvpBtn = game.querySelector('.btn-pvp');
-  const formContainer = game.querySelector('.form-container');
+  const formsContainer = game.querySelector('.forms-container');
+  const formPvE = game.querySelector('.form-pve');
   const formPvP = game.querySelector('.form-pvp');
   const playersInfo = game.querySelectorAll('.player-info');
   const fields = game.querySelectorAll('.field');
@@ -159,36 +161,51 @@ const displayController = (() => {
     handleScreenTransition(e, startScreen, settingsScreen)
   );
 
-  pvpBtn.addEventListener('click', (e) => {
-    pvpBtn.classList.add('active');
-    formContainer.style.animation = '0.4s ease-in-out fade-in';
+  pveBtn.addEventListener('click', (e) => toggleForm(e, formPvP, formPvE));
+  pvpBtn.addEventListener('click', (e) => toggleForm(e, formPvE, formPvP));
 
-    formContainer.addEventListener(
+  const toggleForm = (e, previewsForm, currentForm) => {
+    formsContainer.style.animation = '0.4s ease-in-out fade-in';
+
+    const { currentTarget } = e;
+    if (currentTarget.classList.contains('btn-pvp')) {
+      pvpBtn.classList.add('active');
+      pveBtn.classList.remove('active');
+    } else {
+      pveBtn.classList.add('active');
+      pvpBtn.classList.remove('active');
+    }
+
+    previewsForm.style.display = 'none';
+    previewsForm.style.opacity = '0';
+    currentForm.style.display = 'flex';
+    currentForm.style.opacity = '1';
+
+    formsContainer.addEventListener(
       'animationend',
       (e) => {
-        formContainer.style.opacity = '1';
+        formsContainer.style.opacity = '1';
+        formsContainer.style.pointerEvents = 'auto';
       },
       { once: true }
     );
-  });
+  };
 
   formPvP.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    handleScreenTransition(e, settingsScreen, gameScreen);
-
     const formData = new FormData(e.target);
     const { player1: firstPlayerName, player2: secondPlayerName } =
       Object.fromEntries(formData);
+    e.target.reset();
 
     const firstPlayer = Player(firstPlayerName, 'X', 'var(--primary-dark)');
     const secondPlayer = Player(secondPlayerName, 'O', 'var(--primary-teal)');
-
     gameController.setPlayers(firstPlayer, secondPlayer);
+
+    handleScreenTransition(e, settingsScreen, gameScreen);
     setPlayersInfo(firstPlayer, secondPlayer);
     setEndRoundButtons(false);
-
-    e.target.reset();
   });
 
   const handleScreenTransition = (e, fadeOutScreen, fadeInScreen) => {
@@ -306,6 +323,8 @@ const displayController = (() => {
     gameController.reset();
     resetBoard();
 
+    pvpBtn.classList.remove('active');
+    formsContainer.removeAttribute('style');
     handleScreenTransition(e, gameScreen, settingsScreen);
   });
 

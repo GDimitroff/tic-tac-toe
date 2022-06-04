@@ -45,7 +45,7 @@
           </button>
         </div>
 
-        <div class="form-container">
+        <div class="forms-container">
           <form class="form-pvp">
             <div class="players-inputs">
               <div class="player-input">
@@ -68,6 +68,30 @@
                   autocomplete="off"
                   required
                 />
+              </div>
+            </div>
+            <button class="btn btn-submit" type="submit">Fight!</button>
+          </form>
+
+          <form class="form-pve">
+            <div class="players-inputs">
+              <div class="player-input">
+                <input
+                  type="text"
+                  id="player1"
+                  name="player1"
+                  placeholder="Player 1"
+                  autocomplete="off"
+                  required
+                />
+              </div>
+
+              <div class="ai-input">
+                <select id="difficulty">
+                  <option value="easy">Easy</option>
+                  <option value="medium">Medium</option>
+                  <option value="hard">Hard</option>
+                </select>
               </div>
             </div>
             <button class="btn btn-submit" type="submit">Fight!</button>

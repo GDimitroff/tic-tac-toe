@@ -191,13 +191,19 @@ const displayController = (() => {
     );
   };
 
-  formPvP.addEventListener('submit', (e) => {
+  formPvE.addEventListener('submit', handleForm);
+  formPvP.addEventListener('submit', handleForm);
+
+  function handleForm(e) {
     e.preventDefault();
 
+    const { target } = e;
+    const gameMode = target.classList.contains('form-pve') ? 'pve' : 'pvp';
+
     const formData = new FormData(e.target);
+    console.log(formData.values);
     const { player1: firstPlayerName, player2: secondPlayerName } =
       Object.fromEntries(formData);
-    e.target.reset();
 
     const firstPlayer = Player(firstPlayerName, 'X', 'var(--primary-dark)');
     const secondPlayer = Player(secondPlayerName, 'O', 'var(--primary-teal)');
@@ -206,7 +212,8 @@ const displayController = (() => {
     handleScreenTransition(e, settingsScreen, gameScreen);
     setPlayersInfo(firstPlayer, secondPlayer);
     setEndRoundButtons(false);
-  });
+    e.target.reset();
+  }
 
   const handleScreenTransition = (e, fadeOutScreen, fadeInScreen) => {
     fadeOutScreen.style.animation = '0.4s ease-in-out fade-out';

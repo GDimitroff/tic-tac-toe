@@ -154,6 +154,7 @@ body {
   margin-bottom: 1rem;
 }
 
+.ai-input > input,
 .player-input > input {
   width: 100%;
   text-align: center;
@@ -175,16 +176,14 @@ body {
   color: var(--secondary-dark);
 }
 
-.ai-input > select {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  font-family: inherit;
-  font-size: 1.8rem;
-  padding: 0 1rem;
-  border: 2px solid var(--secondary-teal);
-  border-radius: 3px;
+.ai-input > input {
+  border: 2px solid var(--secondary-dark);
+  background-color: var(--secondary-light);
+}
+
+.ai-input > input::placeholder {
+  font-size: 1.2rem;
+  color: var(--primary-dark);
 }
 
 .btn-submit {

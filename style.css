@@ -175,6 +175,18 @@ body {
   color: var(--secondary-dark);
 }
 
+.ai-input > select {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  font-family: inherit;
+  font-size: 1.8rem;
+  padding: 0 1rem;
+  border: 2px solid var(--secondary-teal);
+  border-radius: 3px;
+}
+
 .btn-submit {
   background-color: var(--primary-teal);
   padding: 1rem;

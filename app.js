@@ -178,7 +178,7 @@ const displayController = (() => {
   const formPvE = game.querySelector('.form-pve');
   const formPvP = game.querySelector('.form-pvp');
   const playersInfo = game.querySelectorAll('.player-info');
-  const fields = game.querySelectorAll('.field');
+  const gameBoard = game.querySelector('.board');
   const optionButtons = game.querySelector('.options');
   const backBtn = game.querySelector('.btn-back');
   const nextRoundBtn = game.querySelector('.btn-next');
@@ -249,6 +249,7 @@ const displayController = (() => {
     handleScreenTransition(e, settingsScreen, gameScreen);
     setPlayersInfo(firstPlayer, secondPlayer);
     setEndRoundButtons(false);
+    gameBoard.addEventListener('click', handlePlayTurn);
     e.target.reset();
   }
 
@@ -309,31 +310,33 @@ const displayController = (() => {
     }
   };
 
-  fields.forEach((field) => {
-    field.addEventListener('click', (e) => {
-      if (
-        field.children[0].textContent !== '' ||
-        gameController.getIsGameOver()
-      ) {
-        return;
-      }
+  function handlePlayTurn(e) {
+    if (!e.target.classList.contains('field')) return;
 
-      const fieldIndex = parseInt(e.target.dataset.index);
-      gameController.playerTurn(fieldIndex);
-      updateBoard(fieldIndex);
+    if (e.target.textContent !== '' || gameController.getIsGameOver()) {
+      return;
+    }
 
-      if (gameController.getPlayer2().getName() === 'AI') {
+    const fieldIndex = parseInt(e.target.dataset.index);
+    gameController.playerTurn(fieldIndex);
+    updateBoard(fieldIndex);
+
+    if (gameController.getPlayer2().getName() === 'AI') {
+      gameBoard.removeEventListener('click', handlePlayTurn);
+
+      setTimeout(() => {
+        gameBoard.addEventListener('click', handlePlayTurn);
         if (gameController.getIsGameOver()) return;
 
         const botFieldIndex = gameController.getRandomBotMove();
         gameController.botTurn(botFieldIndex);
         updateBoard(botFieldIndex);
-      }
-    });
-  });
+      }, 400);
+    }
+  }
 
   const updateBoard = (fieldIndex) => {
-    const fieldTextElement = fields[fieldIndex].children[0];
+    const fieldTextElement = gameBoard.children[fieldIndex].children[0];
 
     fieldTextElement.textContent = board.getField(fieldIndex);
     fieldTextElement.classList.add('active');
@@ -350,7 +353,7 @@ const displayController = (() => {
   };
 
   const resetBoard = () => {
-    fields.forEach((field) => {
+    Array.from(gameBoard.children).forEach((field) => {
       field.children[0].classList.remove('active');
       field.children[0].textContent = '';
       field.style.background = 'var(--primary-light)';
@@ -360,7 +363,8 @@ const displayController = (() => {
   const highlightCombination = (combinations) => {
     combinations.forEach((combination) => {
       combination.forEach((fieldIndex) => {
-        fields[fieldIndex].style.background = 'var(--secondary-light)';
+        gameBoard.children[fieldIndex].style.background =
+          'var(--secondary-light)';
       });
     });
   };

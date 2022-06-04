@@ -255,17 +255,40 @@ body {
   display: grid;
   grid-template-columns: repeat(3, 120px);
   grid-template-rows: repeat(3, 120px);
-  gap: 5px;
-  background-color: var(--secondary-dark);
   margin: 6.6rem 0;
 }
 
 .field {
   background-color: var(--primary-light);
+  border: 2px solid var(--secondary-dark);
   display: flex;
   justify-content: center;
   align-items: center;
   transition: all 0.2s ease-in-out;
+}
+
+.field:nth-child(1),
+.field:nth-child(2),
+.field:nth-child(3) {
+  border-top: none;
+}
+
+.field:nth-child(1),
+.field:nth-child(4),
+.field:nth-child(7) {
+  border-left: none;
+}
+
+.field:nth-child(3),
+.field:nth-child(6),
+.field:nth-child(9) {
+  border-right: none;
+}
+
+.field:nth-child(7),
+.field:nth-child(8),
+.field:nth-child(9) {
+  border-bottom: none;
 }
 
 .field-text {
